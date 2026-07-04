@@ -1,0 +1,26 @@
+{
+  "candidates": [
+    {
+      "id": "P1",
+      "title": "Online Marketplaces and Search Frictions for Small Firms",
+      "authors": ["Alex Example", "Riley Sample"],
+      "year": 2024,
+      "journal": "Journal of Example Economics",
+      "abstract": "We show that online marketplace participation lowers search frictions for small firms by expanding buyer reach and reducing customer acquisition costs.",
+      "evidence_excerpt": "online marketplace participation lowers search frictions for small firms by expanding buyer reach",
+      "evidence_location": "sample abstract",
+      "source": "fictional sample data"
+    },
+    {
+      "id": "P2",
+      "title": "Digital Platforms and Consumer Entertainment Choices",
+      "authors": ["Morgan Placeholder"],
+      "year": 2023,
+      "journal": "Example Information Systems Review",
+      "abstract": "This article studies how consumers choose entertainment products on digital platforms.",
+      "evidence_excerpt": "",
+      "evidence_location": "",
+      "source": "fictional sample data"
+    }
+  ]
+}

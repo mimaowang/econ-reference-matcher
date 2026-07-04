@@ -1,0 +1,13 @@
+{
+  "filters": {
+    "require_ssci": true,
+    "allowed_fields": ["economics", "management", "information systems"],
+    "allow_user_provided_journal_status": true
+  },
+  "output": {
+    "require_claim_map": true,
+    "require_rejected_decoys": true,
+    "require_paper_ready_sentence": true,
+    "min_direct_support": 1
+  }
+}

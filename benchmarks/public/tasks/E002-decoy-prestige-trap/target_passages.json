@@ -1,0 +1,14 @@
+{
+  "id": "E002",
+  "title": "Reject prestige decoy with wrong mechanism",
+  "type": "closed_corpus",
+  "report_language": "english",
+  "manuscript_language": "english",
+  "target_passages": [
+    {
+      "id": "P1",
+      "text": "Export market entry can reduce firms' financing constraints by improving information transparency to lenders.",
+      "intended_use": "direct in-text citation"
+    }
+  ]
+}

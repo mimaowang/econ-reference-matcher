@@ -1,0 +1,79 @@
+{
+  "task_id": "E###",
+  "canaries": [
+    "CANARY_E###_DO_NOT_LEAK_PRIVATE_GOLD"
+  ],
+  "target_claims": [
+    {
+      "claim_id": "C1",
+      "text": "The citeable claim that the output should recover.",
+      "type": "empirical relationship | theory mechanism | literature dialogue",
+      "citation_need": "direct support"
+    }
+  ],
+  "must_find": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "title": "Most Direct Supporting Paper",
+      "doi": "10.xxxx/example",
+      "claim_id": "C1"
+    }
+  ],
+  "acceptable_alternatives": [
+    {
+      "paper_id": "PAPER-ALT-001",
+      "title": "Acceptable Alternative Paper",
+      "doi": "10.xxxx/alternative",
+      "claim_id": "C1",
+      "category": "Direct Support"
+    }
+  ],
+  "forbidden_decoys": [
+    {
+      "paper_id": "PAPER-DECOY-001",
+      "title": "Tempting But Wrong Paper",
+      "doi": "10.xxxx/decoy",
+      "reason": "Explain why this paper is topic-adjacent, directionally wrong, overgeneralized, or unsupported."
+    }
+  ],
+  "claim_to_paper_map": [
+    {
+      "claim_id": "C1",
+      "paper_id": "PAPER-DIRECT-001",
+      "category": "Direct Support"
+    }
+  ],
+  "evidence_requirements": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "requires_excerpt": true,
+      "acceptable_locations": ["abstract", "full text", "publisher page", "DOI page"]
+    }
+  ],
+  "category_gold": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "category": "Direct Support"
+    }
+  ],
+  "journal_filter_gold": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "ssci": "Verified | User-provided | Unverified",
+      "jcr_quartile": "Q1",
+      "abs_stars": 3,
+      "ft50": false,
+      "utd24": false
+    }
+  ],
+  "paper_ready_requirements": {
+    "requires_english_sentence": true,
+    "requires_apa": true,
+    "requires_bibtex": true
+  },
+  "expert_notes": "Explain why each must-find paper supports the claim and why each decoy must be rejected.",
+  "scoring": {
+    "max_points": 100,
+    "minimum_passing_score": 75
+  }
+}

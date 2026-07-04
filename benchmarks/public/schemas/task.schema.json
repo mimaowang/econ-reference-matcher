@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "econ-reference-matcher benchmark task",
+  "type": "object",
+  "required": ["id", "title", "type", "target_passages"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": ["closed_corpus", "open_web", "expert_review"]
+    },
+    "report_language": { "type": "string" },
+    "manuscript_language": { "type": "string" },
+    "target_passages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "intended_use": { "type": "string" }
+        }
+      }
+    },
+    "constraints": { "type": "object" }
+  }
+}

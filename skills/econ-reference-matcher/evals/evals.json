@@ -1,0 +1,57 @@
+{
+  "skill_name": "econ-reference-matcher",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use econ-reference-matcher. My manuscript excerpt is in evals/files/manuscript_excerpt.md. For the target passage in evals/files/target_passages.md, find SSCI economics or adjacent social-science papers that can directly support the sentence. Do not include papers that are only about digital platforms in general.",
+      "expected_output": "A reference-match report that decomposes the target claim, distinguishes direct support from topic-adjacent papers, gives 3-5 final papers if they pass, and does not pad weak candidates.",
+      "files": [
+        "evals/files/manuscript_excerpt.md",
+        "evals/files/target_passages.md"
+      ],
+      "expectations": [
+        "Output includes a claim map for the target passage.",
+        "Output explicitly distinguishes Direct Support from Topic Adjacent / Rejected candidates.",
+        "Each final recommendation identifies which target claim it supports.",
+        "Each final recommendation includes a verifiable excerpt or is labeled Strong Candidate Pending Full Text.",
+        "The report does not treat broad digital-platform topic similarity as direct support."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use econ-reference-matcher. I am writing in Chinese, but the paper is an English economics paper. I need literature dialogue for a contribution paragraph: prior studies look at platform adoption and firm performance, but my paper argues that the main contribution is identifying demand-access and search-cost mechanisms for small firms. Use ABS 3+ or FT50 if possible, but do not sacrifice direct claim fit.",
+      "expected_output": "A Chinese-language report preserving English bibliographic metadata, with translated titles, literature-dialogue categories, and paper-ready English sentences.",
+      "files": [],
+      "expectations": [
+        "Output language is Chinese while bibliographic metadata remains in English.",
+        "Output includes paper-ready English citation or dialogue sentences.",
+        "Output explains how each paper supports contribution positioning rather than merely listing related studies.",
+        "Output explains any trade-off between strict ABS/FT50 filters and direct citation fitness."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use econ-reference-matcher. I have three target sentences from my introduction. For each sentence, return only papers that can be cited immediately after that sentence. If a sentence has fewer than three passing papers, keep searching and tell me which claim is still unsupported rather than filling the list with weak matches.",
+      "expected_output": "A batch report with separate claim maps and final recommendations per sentence, plus an explicit retry/unsupported-claim note if fewer than three strong papers pass.",
+      "files": [],
+      "expectations": [
+        "Output handles multiple target passages separately.",
+        "Output does not merge evidence across passages.",
+        "Output states when a claim remains unsupported instead of padding weak matches.",
+        "Output includes categories for Direct Support, Theory Support, Literature Dialogue, Strong Candidate Pending Full Text, or Topic Adjacent / Rejected."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use econ-reference-matcher. I found a famous top-journal paper with similar keywords, but I am not sure whether it supports my sentence. Check whether it can be cited after this claim: 'Export market entry reduces financing constraints by improving information transparency.' If it cannot directly support the claim, reject it or reclassify it.",
+      "expected_output": "A fit-check report that does not let journal prestige substitute for claim support, requests or uses verifiable excerpts, and classifies the paper honestly.",
+      "files": [],
+      "expectations": [
+        "Output applies the direct citation fitness gate.",
+        "Output checks direction of causality and mechanism fit.",
+        "Output does not infer support from title, prestige, or keyword overlap alone.",
+        "Output asks for PDF or excerpt if the paper cannot be verified."
+      ]
+    }
+  ]
+}

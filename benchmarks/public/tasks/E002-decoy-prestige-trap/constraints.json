@@ -1,0 +1,11 @@
+{
+  "filters": {
+    "require_ssci": true,
+    "prefer_high_ranked": true
+  },
+  "output": {
+    "require_claim_map": true,
+    "require_causality_check": true,
+    "require_rejected_decoys": true
+  }
+}

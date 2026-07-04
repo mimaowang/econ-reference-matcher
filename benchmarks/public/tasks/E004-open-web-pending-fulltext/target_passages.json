@@ -1,0 +1,14 @@
+{
+  "id": "E004",
+  "title": "Open-web retrieval with inaccessible full text",
+  "type": "open_web",
+  "report_language": "english",
+  "manuscript_language": "english",
+  "target_passages": [
+    {
+      "id": "P1",
+      "text": "E-commerce infrastructure can improve rural producers' market access by lowering matching frictions between dispersed sellers and buyers.",
+      "intended_use": "direct support and theory support"
+    }
+  ]
+}

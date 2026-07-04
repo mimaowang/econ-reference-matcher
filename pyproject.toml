@@ -1,0 +1,15 @@
+[project]
+name = "econ-reference-matcher"
+version = "0.1.0"
+description = "Claude Code skill for matching economics manuscript claims to directly citeable references."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "mimaowang" },
+  { name = "econ-reference-matcher contributors" }
+]
+keywords = ["claude-code", "agent-skill", "economics", "references", "benchmark"]
+
+[tool.econ-reference-matcher]
+runtime = "standard-library-only"

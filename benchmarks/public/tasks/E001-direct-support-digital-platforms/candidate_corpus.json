@@ -1,0 +1,54 @@
+{
+  "schema": "econ-reference-matcher.benchmark-corpus.v1",
+  "note": "Fictional corpus for deterministic benchmark testing.",
+  "papers": [
+    {
+      "id": "PAPER-DIRECT-001",
+      "title": "Online Marketplaces and Search Frictions for Small Firms",
+      "authors": ["Alex Example", "Riley Sample"],
+      "year": 2024,
+      "journal": "Journal of Example Economics",
+      "doi": "10.0000/example.direct.001",
+      "journal_status": {
+        "ssci": "User-provided",
+        "jcr_quartile": "Q1",
+        "abs_stars": 3
+      },
+      "abstract": "We show that online marketplace participation lowers search frictions for small firms by expanding buyer reach and reducing customer acquisition costs.",
+      "excerpt": "online marketplace participation lowers search frictions for small firms by expanding buyer reach",
+      "location": "abstract"
+    },
+    {
+      "id": "PAPER-THEORY-001",
+      "title": "Search Costs, Matching Frictions, and Market Access",
+      "authors": ["Taylor Mechanism"],
+      "year": 2021,
+      "journal": "Example Economic Theory",
+      "doi": "10.0000/example.theory.001",
+      "journal_status": {
+        "ssci": "User-provided",
+        "jcr_quartile": "Q2",
+        "abs_stars": 3
+      },
+      "abstract": "A reduction in search costs improves market access by increasing the probability that small sellers and dispersed buyers match.",
+      "excerpt": "A reduction in search costs improves market access by increasing the probability that small sellers and dispersed buyers match.",
+      "location": "abstract"
+    },
+    {
+      "id": "PAPER-DECOY-001",
+      "title": "Digital Platforms and Consumer Entertainment Choices",
+      "authors": ["Morgan Placeholder"],
+      "year": 2023,
+      "journal": "Example Information Systems Review",
+      "doi": "10.0000/example.decoy.001",
+      "journal_status": {
+        "ssci": "User-provided",
+        "jcr_quartile": "Q2",
+        "abs_stars": 2
+      },
+      "abstract": "This article studies how consumers choose entertainment products on digital platforms.",
+      "excerpt": "consumers choose entertainment products on digital platforms",
+      "location": "abstract"
+    }
+  ]
+}

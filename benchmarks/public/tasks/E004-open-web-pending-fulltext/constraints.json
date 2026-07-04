@@ -1,0 +1,11 @@
+{
+  "filters": {
+    "require_ssci": true,
+    "allowed_fields": ["economics", "development", "regional studies", "information systems"]
+  },
+  "output": {
+    "require_pending_full_text_label": true,
+    "require_sources": true,
+    "do_not_fabricate_quotes": true
+  }
+}

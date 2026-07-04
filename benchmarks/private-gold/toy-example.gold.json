@@ -1,0 +1,96 @@
+{
+  "task_id": "E001",
+  "canaries": [
+    "CANARY_E001_DO_NOT_LEAK_DIRECT_SUPPORT_GOLD"
+  ],
+  "target_claims": [
+    {
+      "claim_id": "C1",
+      "text": "Digital platform participation reduces small firms' market frictions.",
+      "type": "theory mechanism",
+      "citation_need": "direct support"
+    },
+    {
+      "claim_id": "C2",
+      "text": "Demand access and lower search costs are the channels.",
+      "type": "theory mechanism",
+      "citation_need": "theory support"
+    }
+  ],
+  "must_find": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "title": "Online Marketplaces and Search Frictions for Small Firms",
+      "doi": "10.0000/example.direct.001",
+      "claim_id": "C1"
+    }
+  ],
+  "acceptable_alternatives": [
+    {
+      "paper_id": "PAPER-THEORY-001",
+      "title": "Search Costs, Matching Frictions, and Market Access",
+      "doi": "10.0000/example.theory.001",
+      "claim_id": "C2",
+      "category": "Theory Support"
+    }
+  ],
+  "forbidden_decoys": [
+    {
+      "paper_id": "PAPER-DECOY-001",
+      "title": "Digital Platforms and Consumer Entertainment Choices",
+      "doi": "10.0000/example.decoy.001",
+      "reason": "Topic-adjacent platform paper that does not support small-firm market-friction mechanisms."
+    }
+  ],
+  "claim_to_paper_map": [
+    {
+      "claim_id": "C1",
+      "paper_id": "PAPER-DIRECT-001",
+      "category": "Direct Support"
+    },
+    {
+      "claim_id": "C2",
+      "paper_id": "PAPER-THEORY-001",
+      "category": "Theory Support"
+    }
+  ],
+  "evidence_requirements": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "requires_excerpt": true,
+      "acceptable_locations": ["abstract", "full text", "publisher page"]
+    }
+  ],
+  "category_gold": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "category": "Direct Support"
+    },
+    {
+      "paper_id": "PAPER-THEORY-001",
+      "category": "Theory Support"
+    },
+    {
+      "paper_id": "PAPER-DECOY-001",
+      "category": "Topic Adjacent / Rejected"
+    }
+  ],
+  "journal_filter_gold": [
+    {
+      "paper_id": "PAPER-DIRECT-001",
+      "ssci": "User-provided",
+      "jcr_quartile": "Q1",
+      "abs_stars": 3
+    }
+  ],
+  "paper_ready_requirements": {
+    "requires_english_sentence": true,
+    "requires_apa": true,
+    "requires_bibtex": true
+  },
+  "expert_notes": "Toy fictional gold. Direct paper supports C1; theory paper supports C2; entertainment-platform paper must be rejected.",
+  "scoring": {
+    "max_points": 100,
+    "minimum_passing_score": 75
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "E001",
+  "title": "Direct support for digital platform market-friction claim",
+  "type": "closed_corpus",
+  "report_language": "english",
+  "manuscript_language": "english",
+  "target_passages": [
+    {
+      "id": "P1",
+      "text": "Digital platform participation can reduce small firms' market frictions by expanding access to demand and lowering search costs.",
+      "intended_use": "direct in-text citation"
+    }
+  ]
+}

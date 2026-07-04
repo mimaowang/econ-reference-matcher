@@ -1,0 +1,14 @@
+{
+  "id": "E003",
+  "title": "Chinese user, English manuscript, literature dialogue",
+  "type": "expert_review",
+  "report_language": "chinese",
+  "manuscript_language": "english",
+  "target_passages": [
+    {
+      "id": "P1",
+      "text": "Our study contributes to the platform economics literature by identifying demand-access and search-cost mechanisms through which platform participation affects small-firm growth.",
+      "intended_use": "literature dialogue and contribution positioning"
+    }
+  ]
+}

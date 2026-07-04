@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile Python scripts
+        run: python -m compileall -q skills/econ-reference-matcher/scripts benchmarks/public/scripts
+
+      - name: Validate JSON files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          for path in Path(".").rglob("*.json"):
+              if any(part in {"workspace", "__pycache__"} for part in path.parts):
+                  continue
+              with path.open("r", encoding="utf-8") as handle:
+                  json.load(handle)
+              print(f"OK {path}")
+          PY
+
+      - name: Check benchmark public task leakage
+        run: python benchmarks/public/scripts/leak_check.py
+
+      - name: Check sample report
+        run: python skills/econ-reference-matcher/scripts/check_report.py --report examples/report.sample.md --min-final 3
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+
+      - name: Run deterministic benchmark smoke test
+        run: |
+          python benchmarks/public/scripts/run_benchmark.py --iteration ci-smoke --workspace "$RUNNER_TEMP/econ-reference-matcher-benchmark"
+          test -f "$RUNNER_TEMP/econ-reference-matcher-benchmark/ci-smoke/E001/with_skill/RUN_INSTRUCTIONS.md"

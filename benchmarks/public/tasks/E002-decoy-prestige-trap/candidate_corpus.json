@@ -1,0 +1,39 @@
+{
+  "schema": "econ-reference-matcher.benchmark-corpus.v1",
+  "note": "Fictional corpus for deterministic benchmark testing.",
+  "papers": [
+    {
+      "id": "PAPER-DIRECT-002",
+      "title": "Export Entry and Credit Frictions in Private Firms",
+      "authors": ["Casey Export", "Jordan Credit"],
+      "year": 2022,
+      "journal": "Journal of Example International Economics",
+      "doi": "10.0000/example.direct.002",
+      "journal_status": {
+        "ssci": "User-provided",
+        "jcr_quartile": "Q1",
+        "abs_stars": 3
+      },
+      "abstract": "We find that export entry reduces financing constraints because lenders receive more credible information about firm quality after firms begin serving foreign buyers.",
+      "excerpt": "export entry reduces financing constraints because lenders receive more credible information about firm quality",
+      "location": "abstract"
+    },
+    {
+      "id": "PAPER-DECOY-002",
+      "title": "Finance and Export Participation: Evidence from Large Public Firms",
+      "authors": ["Prestige Author"],
+      "year": 2020,
+      "journal": "Top Example Review",
+      "doi": "10.0000/example.decoy.002",
+      "journal_status": {
+        "ssci": "User-provided",
+        "jcr_quartile": "Q1",
+        "abs_stars": 4,
+        "ft50": true
+      },
+      "abstract": "This article shows that firms with fewer financing constraints are more likely to enter export markets.",
+      "excerpt": "firms with fewer financing constraints are more likely to enter export markets",
+      "location": "abstract"
+    }
+  ]
+}

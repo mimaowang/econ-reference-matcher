@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "econ-reference-matcher grading result",
+  "type": "object",
+  "required": ["task_id", "run_id", "total_score", "dimensions", "critical_failures"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "total_score": { "type": "number" },
+    "invalid": { "type": "boolean" },
+    "dimensions": { "type": "object" },
+    "critical_failures": { "type": "array", "items": { "type": "string" } },
+    "findings": { "type": "array", "items": { "type": "object" } },
+    "novel_candidate_review": { "type": "array", "items": { "type": "object" } }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "target_passage": "Digital platform participation can reduce small firms' market frictions by expanding access to demand and lowering search costs.",
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Digital platform participation reduces small firms' market frictions.",
+      "type": "theory mechanism",
+      "citation_need": "direct support",
+      "non_negotiable_terms": "digital platforms; small firms; market frictions",
+      "flexible_terms": "online marketplaces; search costs; demand access; transaction costs"
+    },
+    {
+      "id": "C2",
+      "text": "Demand access and lower search costs are plausible channels.",
+      "type": "theory mechanism",
+      "citation_need": "theory support",
+      "non_negotiable_terms": "demand access; search costs",
+      "flexible_terms": "market access; matching frictions; information frictions"
+    }
+  ]
+}

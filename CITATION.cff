@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use econ-reference-matcher in academic or open-source work, please cite the repository."
+title: "econ-reference-matcher"
+version: "0.1.0"
+date-released: "2026-07-04"
+license: "MIT"
+authors:
+  - name: "mimaowang"
+  - name: "econ-reference-matcher contributors"
+abstract: "A Claude Code skill and benchmark suite for matching economics manuscript claims to directly citeable supporting literature."
+keywords:
+  - "economics"
+  - "references"
+  - "citation"
+  - "agent skill"
+  - "Claude Code"

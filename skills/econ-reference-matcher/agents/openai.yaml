@@ -1,0 +1,7 @@
+interface:
+  display_name: "Econ Reference Matcher"
+  short_description: "Match economics manuscript claims to directly citeable references."
+  default_prompt: "Use $econ-reference-matcher to find directly citeable economics references for this manuscript passage."
+
+policy:
+  allow_implicit_invocation: true

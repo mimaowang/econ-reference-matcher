@@ -1,0 +1,4 @@
+journal,issn,eissn,ssci,jcr_quartile,abs_stars,ft50,utd24,fields,source,verified_date
+Journal of Example Economics,1234-5678,8765-4321,true,Q1,3,false,false,economics;public policy,user-provided sample,2026-01-01
+Example Information Systems Review,1111-2222,2222-3333,true,Q2,2,false,false,information systems;management,user-provided sample,2026-01-01
+Unranked Example Journal,9999-9999,,false,,0,false,false,general,user-provided sample,2026-01-01

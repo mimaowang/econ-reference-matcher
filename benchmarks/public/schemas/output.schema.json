@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "econ-reference-matcher output report shape",
+  "type": "object",
+  "required": ["target_passages", "claim_map", "recommendations"],
+  "properties": {
+    "target_passages": { "type": "array" },
+    "claim_map": { "type": "array" },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "category", "supports_claim"],
+        "properties": {
+          "title": { "type": "string" },
+          "doi": { "type": "string" },
+          "category": { "type": "string" },
+          "supports_claim": { "type": "string" },
+          "verifiable_excerpt": { "type": "string" },
+          "evidence_location": { "type": "string" },
+          "apa": { "type": "string" },
+          "bibtex": { "type": "string" }
+        }
+      }
+    },
+    "rejected_candidates": { "type": "array" },
+    "paper_ready_sentences": { "type": "array" }
+  }
+}

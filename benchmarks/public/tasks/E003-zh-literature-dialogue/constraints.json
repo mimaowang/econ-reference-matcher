@@ -1,0 +1,13 @@
+{
+  "filters": {
+    "require_ssci": true,
+    "preferred_rankings": ["ABS 3+", "FT50"],
+    "do_not_sacrifice_fit_for_rank": true
+  },
+  "output": {
+    "require_chinese_explanation": true,
+    "preserve_english_bibliography": true,
+    "require_translated_titles": true,
+    "require_english_paper_ready_sentences": true
+  }
+}
