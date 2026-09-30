@@ -6,6 +6,19 @@ Journal filters improve relevance and publication fit, but they do not replace c
 
 Default to SSCI economics and closely adjacent social-science journals when the user does not specify filters. Adjacent fields may include finance, management, public policy, development, regional studies, labor, innovation, entrepreneurship, and information systems when they directly support the user's economics claim.
 
+Within that scope, actively search strong journals in the relevant field. Verified JCR Q1-Q2, ABS/AJG 3+, FT50, UTD24, or the user's preferred outlets are useful quality signals, not an additional default intersection. Search those outlets before settling for readily accessible lower-ranked matches.
+
+## Quality Preferences And Exceptions
+
+Distinguish hard requirements ("only", "must", or confirmed eligibility filters) from preferences ("prefer", "ideally", or permission for exceptional matches). Existing config filter fields describe eligibility; they do not turn a conversational preference into a hard rule.
+
+- With similar claim fit and evidence, prefer the stronger relevant journal. Do not let a famous but mismatched article displace a directly supporting one.
+- Under a preference, an unusually direct lower-ranked SSCI paper may be recommended when it adds a needed mechanism, setting, contrast, or independently established corroboration beyond the best claim-matched eligible papers. Compare it with those matches, not only with prestigious near misses. If it adds no demonstrated value, keep it in search notes rather than the recommendation list. Explain the advantage and quality trade-off; continue looking for stronger-journal equivalents before settling.
+- A merely adequate match or an available PDF does not justify lowering journal quality. Do not pad the final list with weak journals to reach a count.
+- For an explicit hard filter, keep any out-of-filter paper separate as an optional lead and ask before treating it as eligible. Do not silently alter saved requirements. Prior explicit permission for an exception is sufficient within its stated scope.
+
+Record the ranking source, edition/year and subject category when relevant; do not present an old or unknown classification as verified current status. Discovery in RePEc, EconLit, NBER, SSRN, or OpenAlex does not establish SSCI membership or journal rank. Working papers remain discovery leads unless the user permits them as final references.
+
 ## Supported Filter Types
 
 The skill can support:
@@ -97,6 +110,8 @@ filters:
 
 Under OR logic, an SSCI Q3 journal can pass if it is ABS/AJG 3+, FT50, UTD24, or otherwise whitelisted. Blacklists and direct citation fitness still override journal prestige.
 
+A paper passing one confirmed OR branch is eligible, not an exception merely because it misses another branch.
+
 ## Verification Labels
 
 Use these labels:
@@ -111,6 +126,6 @@ Use these labels:
 
 1. Respect explicit user hard constraints.
 2. Confirm whether multiple journal standards are intersection (`AND`) or union (`OR`) before saving them into project config.
-3. Default to SSCI only when the user gives no stricter filter.
+3. Default to SSCI eligibility when no other scope is specified, with a preference for strong relevant journals as described above.
 4. If strict filters make direct support impossible, report the trade-off and continue searching before asking whether to relax constraints.
 5. Never use ranking prestige to compensate for weak direct citation fitness.

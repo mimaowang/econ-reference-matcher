@@ -65,25 +65,15 @@ Ask these questions for every final candidate:
 
 If the answer to question 4 is no, do not label the paper `Direct Support`.
 
-## Scoring Rubric
+## Compare Papers On Evidence
 
-Use this rubric as a guide, not as a rigid formula:
+Judge each claim-paper pair from the text. Check the constructs, direction, population, mechanism, and strength of inference: association cannot establish causation, and two separate findings about X-Z and Z-Y do not establish mediation. Distinguish the authors' own results from hypotheses and summaries of other research.
 
-| Dimension | 0 | 1 | 2 | 3 |
-| --- | --- | --- | --- | --- |
-| Claim match | Unrelated | Same broad topic | Same construct or mechanism | Same claim relationship/mechanism |
-| Evidence traceability | None | Metadata only | Abstract/publisher text | Full text or precise excerpt |
-| Citation honesty | Misleading | Requires major caveat | Usable with caveat | Directly citeable |
-| Journal filter | Fails | Unknown | Partially verified | Verified |
-| Dialogue value | None | Weak background | Useful prior work | Strong positioning/contrast |
+For example, "platforms raise profits by lowering search costs" requires evidence for both the profit effect and the channel. A verified profit result can support that relationship without establishing the channel. A matching theory explains a possible mechanism; it does not verify that mechanism in the user's setting. A null or opposite result can be useful literature dialogue, but not direct support for the positive effect.
 
-Suggested category:
+Compare passing papers by the exact claim they cover, how little qualification the citation needs, and the strength and traceability of the evidence. Then prefer the user's quality targets among similarly fitting papers. Explain a lower-ranked exceptional match using `journal-filtering.md`. Do not add source prestige or citation counts to an aggregate score that can compensate for a failed fit gate.
 
-- `Direct Support`: claim match 3, evidence at least 2, citation honesty at least 2.
-- `Theory Support`: mechanism/theory match at least 2, evidence at least 2.
-- `Literature Dialogue`: dialogue value at least 2, evidence at least 2.
-- `Strong Candidate Pending Full Text`: claim match at least 2 but evidence below 2.
-- `Topic Adjacent / Rejected`: claim match below 2 or citation honesty below 2.
+`scripts/score_alignment.py` reports word overlap for inspection only. It neither assigns evidence categories nor verifies supplied excerpts. Low overlap can reflect synonyms or different languages; high overlap can reflect negation or the reverse causal direction. Use semantic reading for both acceptance and rejection.
 
 ## Recovery When Fit Is Weak
 

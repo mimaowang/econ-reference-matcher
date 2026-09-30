@@ -52,6 +52,34 @@
         "Output does not infer support from title, prestige, or keyword overlap alone.",
         "Output asks for PDF or excerpt if the paper cannot be verified."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Use econ-reference-matcher to find references for an English economics manuscript studying electronic procurement by manufacturing firms. Target passage: 'Electronic procurement improves small suppliers' access to distant buyers by lowering buyer-seller search costs.' Separate the access relationship from the search-cost mechanism. I prefer strong SSCI journals, with JCR Q1-Q2 or ABS/AJG 3+ or FT50 or UTD24 as alternatives, but would accept an exceptionally direct lower-ranked SSCI paper with a clear explanation. Search the available economics and broader sources, record actual candidate screening and source limitations, and give citation and dialogue sentences. I have no institutional EconLit access. Do not change my project configuration without confirmation.",
+      "expected_output": "A traceable search and evidence report that retains broad screening, adds citation and version discovery, prefers strong relevant journals, and distinguishes mechanism evidence from a generic performance association.",
+      "files": [],
+      "expectations": [
+        "Recorded queries and screened studies substantiate the claimed breadth; duplicate records and versions do not inflate it.",
+        "The run uses available economics, broad, and citation routes without claiming unavailable EconLit access.",
+        "Promising references and later citations are examined for claim fit rather than treated as support merely because they are linked.",
+        "The report identifies evidence for buyer access separately from evidence for the search-cost channel.",
+        "Any lower-ranked exception has a concrete citation advantage and does not displace an equally fitting stronger-journal paper.",
+        "Unresolved claims prompt targeted follow-up or an honest access/coverage limitation, not weak-match padding."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Use econ-reference-matcher for this closed-corpus exercise. All names and source labels below are fictional; the supplied ranking and version facts are authoritative for this exercise only. Do not browse or invent additional papers. Target claim: 'Exports increase productivity by lowering financing constraints.' Corpus: P1 is a verified SSCI Q1 paper whose results section says 'Exports increase productivity'; it did not test financing constraints. P2 is a verified SSCI Q3 / ABS 3 paper whose results section says 'Exports increase productivity through lower financing constraints.' P3 is a verified SSCI Q4 / ABS 1 paper with the same verified result as P2. P4 is a verified SSCI Q1 paper whose results section says 'Higher productivity increases exports'; it does not estimate the reverse direction. P5w is a working-paper version reporting the full target claim on page 8; the linked SSCI Q1 journal version P5j removed the financing result and reports only the productivity relationship on page 21. First recommend from this corpus under the hard union (SSCI Q1-Q2 OR ABS 3+ OR FT50 OR UTD24). Then explain what changes if journal quality is a preference and exceptional lower-ranked SSCI matches are allowed. Give the claim map and the use and limitations of each relevant paper; fewer than three full-claim matches is acceptable. Report in English.",
+      "expected_output": "A semantic comparison that preserves the union rule, separates relationship from mechanism, rejects the reversed direction as direct support, and keeps quotations tied to the correct version. Preference flexibility must not become needless journal downgrading.",
+      "files": [],
+      "expectations": [
+        "P2 meets the hard union through ABS 3 despite its Q3 classification and directly supports both subclaims in the supplied evidence.",
+        "P1 can support the productivity relationship but not the financing mechanism.",
+        "P3 is outside the hard union; under the preference it stays in search notes rather than the final shortlist because no added value beyond P2 is supplied.",
+        "P4 is not Direct Support for exports causing productivity.",
+        "P5w's mechanism quote and page 8 are not attributed to P5j; the journal result is limited to the verified relationship.",
+        "The run does not invent additional papers to meet a three-paper target."
+      ]
     }
   ]
 }

@@ -69,6 +69,10 @@ Many AI literature searches return papers that are close in topic but weak as ci
 
 The best paper is not necessarily the most famous paper. The best paper is the one that can be cited without overstating what it shows.
 
+Search starts with economics sources such as RePEc/IDEAS and extends through OpenAlex, Crossref, accessible web and publisher sources, citation trails, and relevant working-paper series. Authorized EconLit access and Semantic Scholar can add coverage. The initial 30-50-study screening target for substantial tasks is a starting point, not a ceiling; new routes supplement existing searches. The skill uses the host agent's available tools and does not bundle database access or API integrations.
+
+Strong relevant journals receive search priority. When fit is comparable, prefer the user's quality targets; explain any unusually useful lower-ranked exception to a preference. Explicit hard filters remain in force, including user-confirmed OR rules. Working-paper versions are discovery leads under journal-only requirements, and their text is not silently attributed to the published article.
+
 ## Quality Rules
 
 The skill is built around these rules:
@@ -137,7 +141,7 @@ The scripts do not replace scholarly judgment. They make repeated checks more co
 - `config_tool.py` initializes and validates project config files.
 - `import_journal_list.py` normalizes user-provided journal/ranking CSV files.
 - `normalize_candidates.py` normalizes candidate-paper metadata from JSON or CSV.
-- `score_alignment.py` gives a transparent lexical sanity check for claim-evidence alignment.
+- `score_alignment.py` reports word overlap for reading order only; it does not assign support categories, verify evidence, or reject low-overlap papers.
 - `check_report.py` checks that a final report includes expected evidence and citation fields.
 
 Run any script with `--help` before use.

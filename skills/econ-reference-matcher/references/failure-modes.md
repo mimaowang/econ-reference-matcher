@@ -87,4 +87,7 @@ Response:
 
 - Do not pad with weak matches.
 - Continue searching from new query families.
+- Follow strong seeds' references, later citations, and published versions; compare stronger-journal alternatives.
 - Provide the strong papers found so far only if the user asks for an interim result.
+
+If meaningful accessible routes are exhausted, report the remaining gap and what access or claim revision would enable progress. Do not invent coverage or repeat exhausted searches indefinitely.

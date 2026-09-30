@@ -22,7 +22,7 @@ Use these scripts when they help, and run each script with `--help` before use:
 - `scripts/config_tool.py` - initialize or validate `.econ-reference-matcher/config.yml`.
 - `scripts/import_journal_list.py` - normalize user-provided journal/ranking CSV files.
 - `scripts/normalize_candidates.py` - normalize candidate-paper metadata from JSON or CSV.
-- `scripts/score_alignment.py` - perform a transparent lexical sanity check for claim-evidence fit.
+- `scripts/score_alignment.py` - inspect word overlap; it does not decide support or reject papers.
 - `scripts/check_report.py` - check final report completeness.
 
 ## Core Standard
@@ -50,14 +50,15 @@ For every final paper, make the manuscript use explicit: state how it can be cit
 3. **Apply project filters.**
    - Look for `.econ-reference-matcher/config.yml`. If missing and the user has recurring requirements, offer to create one.
    - Default to SSCI economics or closely adjacent social-science journals unless the user specifies otherwise.
+   - Search strong journals in the relevant field first. Distinguish hard eligibility rules from quality preferences; justify any exception to a preference instead of quietly lowering the shortlist's quality.
    - Treat journal rankings as constraints only when they are verified through user-provided lists, Web of Science/Clarivate/JCR access, journal pages, or other traceable evidence.
    - Read `references/journal-filtering.md` when filters matter.
 
 4. **Search broadly, then rerank strictly.**
-   - Build multiple query families: claim wording, theory mechanism, key variables, context, synonyms, seminal terms, and literature-dialogue alternatives.
-   - Aim to inspect roughly 30-50 plausible candidates before narrowing, when the task is non-trivial.
-   - Use open metadata sources, publisher pages, DOI pages, OA PDFs, RePEc, Crossref, OpenAlex, Google Scholar-like web results when available, and user-provided database exports.
-   - Do not stop at the first plausible papers if they are only topic-adjacent.
+   - Read `references/workflow.md` for claim-based queries, source roles, and citation expansion. Use RePEc/IDEAS as an economics starting point; add authorized EconLit access, field-relevant working-paper series, and citation-neighbor searches to the existing OpenAlex, Crossref, web, publisher, DOI, OA PDF, and user-export searches.
+   - For non-trivial tasks, aim to inspect roughly 30-50 distinct plausible studies in the initial broad pass, then follow promising leads and unresolved claims. This is not a ceiling or a budget to divide among more sources.
+   - Trace references and later citations of strong seeds, including contrasting findings. Search both strong journals and the broader literature; compare alternatives before settling on the first 3-5 papers.
+   - Track what was actually searched and read. For each promising working paper, actively look for a published journal version before final selection; follow the version-resolution step in `references/workflow.md`. Cite the verified, eligible journal version rather than the working paper, without treating their findings as interchangeable.
 
 5. **Verify evidence.**
    - Prefer full text, publisher abstracts, DOI pages, official abstracts, or user-provided database/PDF excerpts.
@@ -67,7 +68,7 @@ For every final paper, make the manuscript use explicit: state how it can be cit
 
 6. **Deliver only after the fit gate passes.**
    - Final output should usually contain 3-5 papers per target passage.
-   - If fewer than 3 papers pass the direct/support/dialogue gate, say so and continue searching unless the user asks to stop.
+   - If fewer than 3 papers pass, continue searching for the missing support. If meaningful accessible routes are exhausted or access blocks verification, report the gap and next step; do not pad the list or claim the search is complete.
    - Mark weak matches as `Topic Adjacent / Rejected` rather than hiding them inside the final list.
    - Include compact paper-ready citation and literature-dialogue sentences whenever the manuscript is in English or the user asks how to cite the literature.
    - Use `references/output-templates.md` for the final structure.

@@ -74,6 +74,15 @@ journal_lists:
         errors, _ = config_tool.validate_config(data)
         self.assertIn("filters.filter_logic must be AND or OR", errors)
 
+    def test_quality_preference_does_not_create_extra_hard_filters(self) -> None:
+        data = config_tool.minimal_yaml_load(config_tool.DEFAULT_CONFIG)
+        filters = data["filters"]
+        self.assertTrue(filters["require_ssci"])
+        self.assertEqual(filters["jcr_quartiles"], [])
+        self.assertIsNone(filters["min_abs_stars"])
+        self.assertFalse(filters["require_ft50"])
+        self.assertFalse(filters["require_utd24"])
+
 
 class CandidateNormalizationTests(unittest.TestCase):
     def test_normalize_candidate_from_common_fields(self) -> None:
@@ -93,20 +102,69 @@ class CandidateNormalizationTests(unittest.TestCase):
 
 
 class AlignmentScoreTests(unittest.TestCase):
-    def test_direct_support_category_requires_overlap_and_evidence(self) -> None:
+    def test_opposite_results_and_reversed_causality_are_not_auto_classified(self) -> None:
         claim = {
             "claim_id": "C1",
-            "text": "Digital platforms reduce search frictions for small firms.",
+            "text": "Exports increase firm productivity.",
             "citation_need": "direct support",
         }
-        candidate = {
-            "id": "P1",
-            "title": "Digital Platforms and Small Firm Search Frictions",
-            "abstract": "Digital platforms reduce search frictions for small firms.",
-            "evidence_excerpt": "Digital platforms reduce search frictions for small firms.",
-        }
-        result = score_alignment.score_pair(claim, candidate)
-        self.assertEqual(result["category"], "Direct Support")
+        for excerpt in (
+            "Exports increase firm productivity.",
+            "Exports do not increase firm productivity.",
+            "Exports decrease firm productivity.",
+            "Firm productivity increases exports.",
+        ):
+            with self.subTest(excerpt=excerpt):
+                result = score_alignment.score_pair(claim, {"id": "P1", "evidence_excerpt": excerpt})
+                self.assertGreater(result["lexical_overlap"], 0)
+                self.assertNotIn("category", result)
+                self.assertTrue(result["review_required"])
+
+    def test_paraphrase_with_no_shared_words_is_not_rejected(self) -> None:
+        result = score_alignment.score_pair(
+            {"text": "Platforms lower search costs."},
+            {"abstract": "Online marketplaces reduce information frictions."},
+        )
+        self.assertEqual(result["lexical_overlap"], 0)
+        self.assertNotIn("category", result)
+        self.assertTrue(result["review_required"])
+
+    def test_non_latin_claim_is_not_given_a_failure_score(self) -> None:
+        result = score_alignment.score_pair(
+            {"text": "\u5e73\u53f0\u964d\u4f4e\u641c\u7d22\u6210\u672c"},
+            {"abstract": "Platforms lower search costs."},
+        )
+        self.assertIsNone(result["lexical_overlap"])
+        self.assertTrue(result["review_required"])
+
+    def test_supplied_excerpt_is_not_scored_as_verified_evidence(self) -> None:
+        result = score_alignment.score_pair(
+            {"text": "Exports increase productivity."},
+            {"evidence_excerpt": "Exports increase productivity."},
+        )
+        self.assertEqual(result["provided_text"], "excerpt")
+        self.assertNotIn("evidence_score", result)
+        self.assertNotIn("total_score", result)
+
+    def test_cli_retains_all_pairs_for_review(self) -> None:
+        from argparse import Namespace
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            claims = root / "claims.json"
+            candidates = root / "candidates.json"
+            output = root / "overlap.json"
+            claims.write_text(json.dumps([{"id": "C1", "text": "Exports increase productivity."}]), encoding="utf-8")
+            candidates.write_text(json.dumps([
+                {"id": "P1", "abstract": "Exports increase productivity."},
+                {"id": "P2", "abstract": "International sales improve efficiency."},
+                {"id": "P3"},
+            ]), encoding="utf-8")
+            score_alignment.cmd_score(Namespace(claims=str(claims), candidates=str(candidates), output=str(output)))
+            payload = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(payload["schema"], "econ-reference-matcher.alignment-scores.v2")
+            self.assertEqual({item["candidate_id"] for item in payload["scores"]}, {"P1", "P2", "P3"})
+            self.assertTrue(all(item["review_required"] for item in payload["scores"]))
 
 
 class ReportCheckTests(unittest.TestCase):

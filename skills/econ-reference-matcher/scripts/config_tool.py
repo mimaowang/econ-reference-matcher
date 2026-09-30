@@ -18,6 +18,8 @@ project:
   citation_style: APA
 
 filters:
+  # These are eligibility rules. Prefer strong relevant journals within them;
+  # a quality preference alone should not become another required filter.
   # AND means all active require_* filters must pass.
   # OR means any active accept_if_* filter may pass; blacklists still override.
   filter_logic: AND

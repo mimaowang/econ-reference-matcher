@@ -51,20 +51,47 @@ Split compound claims when a sentence combines a relationship and a mechanism. F
 
 This makes it possible to classify one paper as direct support for the relationship, another as theory support for the mechanism, or the same paper as support for both.
 
-## 4. Query Families
+## 4. Search Broadly, Then Follow The Evidence
 
-Build several query families. For difficult passages, use all of them:
+### Queries From Claims
 
-- Exact claim language and key phrases.
-- Variable relationship query: `X Y relationship economics journal`.
-- Mechanism query: `mechanism search costs market access small firms`.
-- Theory query: `theory transaction costs information frictions market access`.
-- Context query: country, industry, population, or institutional setting.
-- Seminal literature query: known foundational terms or theories.
-- Literature-dialogue query: `prior research has shown`, `contrasts with`, `extends`, `contribution`.
-- Journal-filter query: journal names, SSCI, ABS, FT50, UTD24, JCR when data is available.
+Build separate queries for the relationship, mechanism, theory, and setting of each claim. Translate the concepts into the literature's terminology rather than searching only the user's wording. For example, a claim about platforms lowering small firms' search costs calls for both `online marketplaces small firms search costs` and `buyer seller matching information frictions`. Add precise phrases, synonyms, foundational theories, and known JEL classifications where useful.
 
-The first broad pass should inspect enough candidates to prevent early anchoring. For non-trivial tasks, this usually means roughly 30-50 plausible candidates across query families before final narrowing.
+Search without a directional verb as well as with it: `platform adoption firm profits` can reveal null or adverse effects missed by `platform adoption increases profits`. For literature dialogue, search the actual competing explanations, populations, or outcomes. A paper cited as a contrast must also be verified.
+
+Run broad queries alongside targeted searches of strong relevant journals and the user's preferred outlets, including specialist journals for the actual sector. Include recent publisher results for each important evidence role; a broad index sorted by date is not a substitute for a focused current-literature query. Do not narrow every query to a journal list before discovering theory, alternative terminology, or publication versions. Apply the confirmed journal rules to final recommendations.
+
+### Source Roles
+
+Use the available host's browser/search tools, supported APIs, or authorized database exports. These are retrieval routes, not bundled database integrations. A site-restricted web search is a useful fallback, but is not an exhaustive native database search.
+
+| Route | What to do with it |
+| --- | --- |
+| [RePEc / IDEAS](https://ideas.repec.org/) and [EconPapers](https://econpapers.repec.org/) | Start economics discovery with claim terms; use relevant classifications, author pages, references, citations, and other-version links. These share RePEc data, so count distinct studies rather than separate hits. |
+| [EconLit](https://www.aeaweb.org/econlit/access) | When institutional access or an authorized export is available, supplement keyword queries with economic subject/JEL classifications. Record unavailable access and continue through other routes; the AEA landing page is not an EconLit search. |
+| [OpenAlex](https://help.openalex.org/api/) | Keep broad and interdisciplinary searches, then expand strong seeds through referenced works and later citations. Page through relevant results; include recent results as well as relevance-ranked ones so highly cited older papers do not dominate discovery. |
+| [NBER](https://www.nber.org/papers), [SSRN](https://papers.ssrn.com/), relevant institutional series | Add field-relevant discovery and version searches: for example NBER for labor/public/macro, SSRN for finance/accounting/management, and CEPR, IZA, World Bank or IMF when the topic warrants them. Verify promising working papers' journal versions. |
+| [Crossref](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) | Retain bibliographic searches; verify DOI, title, authors, venue, and deposited preprint/version relations. Missing relations require checking publisher/author pages, not assuming there is no published version. |
+| [Semantic Scholar](https://www.semanticscholar.org/product/api) | Supplement searches with references, citations, and seed-based recommendations when useful. Reassess every recommended paper against the claim. |
+| General web / Google Scholar when accessible, publisher and DOI pages, OA PDFs, user exports | Preserve these searches for wording absent from indexes, published evidence, lawful full text, and missed records. Search the exact title and authors to resolve promising records and versions. |
+
+Source roles overlap deliberately: one may supply a record another misses or a usable full-text link. Add new routes without reducing the existing broad search. Choose extra series by field, not an identical list for every task. Source reputation, citation counts, and appearing in multiple indexes do not earn a paper support credit.
+
+Follow supported access methods and current service limits. RePEc [discourages bulk website scraping](https://ideas.repec.org/getdata.html); use its documented data routes for programmatic access. Use additional queries and evidence reading to deepen the search, rather than hammering a blocked endpoint. Do not claim access to a source that was unavailable.
+
+### Depth And Citation Expansion
+
+For non-trivial tasks, retain roughly 30-50 distinct plausible studies as the initial broad-screening target. Additional sources and citation expansion extend that pool rather than divide a fixed quota. Inspect abstracts or substantive text where available; record title-only hits separately. Downloading records is not reading studies, and duplicate versions do not increase the count.
+
+Select strong seeds covering different claims or research strands. Inspect their references for theory and predecessors, their later citations for extensions and contrary results, and relevant author or series pages for newer versions. Read the citing passage when available: a citation link alone does not tell you whether it supports, critiques, or merely mentions the seed. Follow newly promising branches while they improve claim coverage.
+
+Keep compact working notes, for example:
+
+| Claim | Source / query or seed | Access / results inspected | New study IDs | Gap / next search |
+| --- | --- | --- | --- | --- |
+| C1 | [source and query, or seed and citation direction] | [what was actually accessible and read] | [deduplicated IDs] | [unresolved relationship/mechanism] |
+
+Report retrieved records, distinct studies screened, and full texts or relevant sections examined separately when those counts were recorded. Do not invent counts. For multiple passages, share the candidate pool where useful but track evidence and remaining gaps per claim.
 
 ## 5. Candidate Triage
 
@@ -73,11 +100,25 @@ For each candidate, record:
 - Bibliographic metadata.
 - Journal and ranking evidence.
 - Source where metadata was found.
+- Discovery route and any linked publication versions; retain all useful source URLs when merging duplicate records.
 - Abstract or full-text evidence availability.
 - Which target claim it might support.
 - Initial category: `Direct Support`, `Theory Support`, `Literature Dialogue`, `Strong Candidate Pending Full Text`, or `Topic Adjacent / Rejected`.
 
 Use `scripts/normalize_candidates.py` when candidate data has been collected in CSV or JSON.
+
+Group repeated DOI records as one publication. For records without a shared DOI, compare titles, authors, dates, and explicit version links before merging; uncertain matches stay separate. Link a working paper and its journal article as versions of one study, preserving their distinct text and identifiers. Keep richer retrieval notes alongside normalized metadata, since the normalizer retains only its documented fields.
+
+### Resolve Promising Working Papers Before Selection
+
+For a working paper that could enter the shortlist, do not stop at its accessible PDF or working-paper DOI:
+
+1. Check its NBER, SSRN, RePEc, or other original record for publication references and version links. Search the exact title plus authors for a journal article; if unresolved, search authors plus distinctive subject terms and check their publication pages, since the published title can change. A missing database version link is not evidence of non-publication.
+2. Confirm the relationship using a publication/version link or corroborating author and study details, then verify the journal record on the publisher page. Similar titles alone are insufficient. An online-first Version of Record counts as published; an accepted manuscript or "forthcoming" entry alone does not establish that status.
+3. If the journal version meets the user's filters and supports the claim, use its title, author list, publication year, journal DOI, and available journal metadata in the recommendation, in-text citation, APA, and BibTeX. Keep the working paper as a discovery/access link, not a second recommendation for the same study. Verify evidence against the version cited as described below.
+4. If no journal version is located, record "journal version not found" with the sources checked and search date; if access prevents resolution, say so. Keep it outside the journal-only recommendations and continue searching for eligible alternatives. Do not conclude that it is unpublished, or substitute the working paper for an ineligible or unverified journal version. Recommend a working paper as such only when the user permits working-paper references.
+
+Keep this check in the existing candidate notes: working-paper identifier -> journal DOI/URL or unresolved status, relationship source, and date checked. No separate report is needed.
 
 ## 6. Evidence Verification
 
@@ -88,6 +129,8 @@ A candidate can move into the final recommendation only if there is traceable ev
 - Explanation of why the excerpt supports the target claim.
 
 If no verifiable text is available, keep the paper as pending or ask the user for the PDF. Do not invent an excerpt or infer a claim from the title alone.
+
+Read enough surrounding text to distinguish the paper's own finding from a hypothesis, a cited prior finding, or a limitation. Verify the exact version used: a working-paper quote or page number cannot be attributed to the journal article. If the journal text is unavailable, keep its support pending; if the verified journal version lacks the earlier finding, do not cite it for that claim. Working papers may guide discovery even when they are ineligible for the final journal-constrained list.
 
 ## 7. Rerank With Direct Citation Fitness
 
@@ -100,6 +143,8 @@ Prefer:
 - Traceable excerpt over unverifiable reputation.
 - Strong claim fit over journal prestige, unless the user set a hard journal constraint.
 
+Among equally well-supported matches, prefer the user's quality targets and stronger relevant outlets. Before retaining a lower-ranked exception, make a targeted final search for the same citation role and outcome in strong field journals, including recent publications. For an income contrast, search income effects rather than repeat the original consumer-welfare query. Compare the best alternatives found; an available PDF or a longer candidate list does not establish that this comparison is complete. Use `journal-filtering.md` for justified exceptions to preferences and for hard constraints.
+
 ## 8. Retry Rule
 
 If the final shortlist still contains weak matches, do not deliver it as if it solved the task. Instead:
@@ -109,6 +154,8 @@ If the final shortlist still contains weak matches, do not deliver it as if it s
 - Search for review articles or seminal theory papers if direct empirical matches fail.
 - Ask for a PDF only when a strong candidate is blocked by access.
 - Report honestly if a claim may need rewriting because available literature does not support it.
+
+Reaching a candidate count or finding three papers is not a stopping rule. Finish after the important claims have evidence and plausible alternatives from broad, targeted, and citation searches have been compared. If further accessible searches yield only repeats or weak matches, explain the actual coverage and unresolved claim rather than promise support that may not exist. A blocked source is an access limitation, not proof that the literature is absent.
 
 ## 9. Final Report
 
