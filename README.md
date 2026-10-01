@@ -1,4 +1,4 @@
-<h1 align="center">Econ Reference Matcher</h1>
+<h1 align="center">经济学文献引用 Skill<br>Econ Reference Matcher</h1>
 
 <p align="center"><a href="#chinese">简体中文</a> · <a href="#english">English</a></p>
 
