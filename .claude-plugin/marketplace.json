@@ -4,13 +4,13 @@
     "name": "mimaowang and econ-reference-matcher contributors"
   },
   "metadata": {
-    "description": "Claude Code skill for matching economics manuscript passages to directly citeable supporting literature.",
+    "description": "Agent skill for matching economics and business manuscript passages to directly citeable supporting literature.",
     "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "econ-reference-matcher",
-      "description": "Find economics references that directly support manuscript sentences, paragraphs, theory claims, and literature-dialogue claims, with configurable journal filters and evidence checks.",
+      "description": "Find economics and business references that directly support manuscript sentences, paragraphs, theory claims, and literature-dialogue claims, with configurable journal filters and evidence checks.",
       "source": "./",
       "strict": false,
       "skills": [

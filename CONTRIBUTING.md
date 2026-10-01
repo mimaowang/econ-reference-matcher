@@ -2,7 +2,7 @@
 
 Thank you for considering a contribution to `econ-reference-matcher`.
 
-This project is a Claude Code skill and benchmark suite for matching manuscript passages to directly citeable economics literature. Contributions should preserve the central quality standard: do not recommend a paper as direct support unless it can honestly support the specific claim in the target passage.
+This project is an agent skill and benchmark suite for matching economics and business manuscript passages to directly citeable literature. Contributions should preserve the central quality standard: do not recommend a paper as direct support unless it can honestly support the specific claim in the target passage.
 
 ## Development Setup
 

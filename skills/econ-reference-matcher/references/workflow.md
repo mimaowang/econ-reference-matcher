@@ -1,6 +1,6 @@
 # Workflow
 
-Use this workflow when matching economics literature to a manuscript sentence, paragraph, contribution claim, or literature-review passage.
+Use this workflow when matching economics or business/management literature to a manuscript sentence, paragraph, contribution claim, or literature-review passage.
 
 ## 1. Intake
 
@@ -11,6 +11,7 @@ Start by identifying the available context:
 - Paper language and report language.
 - Journal filters: SSCI by default, plus optional JCR, ABS/AJG, FT50, UTD24, whitelist, blacklist, field scope, or user-provided lists.
 - Intended use: direct in-text citation, theory support, literature dialogue, contribution contrast, or robustness/background.
+- Research field: economics, management, finance, accounting, marketing, information systems, or a cross-field topic.
 
 If context is missing, ask only for what materially improves fit. If the user cannot provide it, proceed and mark the confidence cost.
 
@@ -65,15 +66,18 @@ Run broad queries alongside targeted searches of strong relevant journals and th
 
 Use the available host's browser/search tools, supported APIs, or authorized database exports. These are retrieval routes, not bundled database integrations. A site-restricted web search is a useful fallback, but is not an exhaustive native database search.
 
+Choose first-pass sources by the manuscript's field, not the skill's name. For economics, start with RePEc/IDEAS and use EconLit when authorized. For management, finance, accounting, marketing, or information systems, start with OpenAlex and targeted searches of relevant journals and publishers; use SSRN or an authorized Web of Science/library export where useful. Add RePEc when the claim crosses into economics, rather than making it a mandatory stop for every business paper. Preserve broad web, citation-neighbor, version, and evidence searches in either branch, with the same initial screening depth.
+
 | Route | What to do with it |
 | --- | --- |
-| [RePEc / IDEAS](https://ideas.repec.org/) and [EconPapers](https://econpapers.repec.org/) | Start economics discovery with claim terms; use relevant classifications, author pages, references, citations, and other-version links. These share RePEc data, so count distinct studies rather than separate hits. |
-| [EconLit](https://www.aeaweb.org/econlit/access) | When institutional access or an authorized export is available, supplement keyword queries with economic subject/JEL classifications. Record unavailable access and continue through other routes; the AEA landing page is not an EconLit search. |
-| [OpenAlex](https://help.openalex.org/api/) | Keep broad and interdisciplinary searches, then expand strong seeds through referenced works and later citations. Page through relevant results; include recent results as well as relevance-ranked ones so highly cited older papers do not dominate discovery. |
+| [RePEc / IDEAS](https://ideas.repec.org/) and [EconPapers](https://econpapers.repec.org/) | Start economics discovery with claim terms; add for business claims with a genuine economics component. Use classifications, author pages, references, citations, and other-version links. These share RePEc data, so count distinct studies rather than separate hits. |
+| [EconLit](https://www.aeaweb.org/econlit/access) | For economics claims, use institutional access or an authorized export when available and supplement keyword queries with subject/JEL classifications. The AEA landing page is not an EconLit search. |
+| [OpenAlex](https://help.openalex.org/api/) | Search broadly across economics and business fields, then expand strong seeds through referenced works and later citations. Page through relevant results; include recent results as well as relevance-ranked ones so highly cited older papers do not dominate discovery. |
+| Web of Science / library exports | If authorized, search the manuscript's business or economics categories and inspect article records. Do not imply that indexing alone verifies a claim or that an unavailable subscription was searched. |
 | [NBER](https://www.nber.org/papers), [SSRN](https://papers.ssrn.com/), relevant institutional series | Add field-relevant discovery and version searches: for example NBER for labor/public/macro, SSRN for finance/accounting/management, and CEPR, IZA, World Bank or IMF when the topic warrants them. Verify promising working papers' journal versions. |
 | [Crossref](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) | Retain bibliographic searches; verify DOI, title, authors, venue, and deposited preprint/version relations. Missing relations require checking publisher/author pages, not assuming there is no published version. |
 | [Semantic Scholar](https://www.semanticscholar.org/product/api) | Supplement searches with references, citations, and seed-based recommendations when useful. Reassess every recommended paper against the claim. |
-| General web / Google Scholar when accessible, publisher and DOI pages, OA PDFs, user exports | Preserve these searches for wording absent from indexes, published evidence, lawful full text, and missed records. Search the exact title and authors to resolve promising records and versions. |
+| Field journals, general web / Google Scholar when accessible, publisher and DOI pages, OA PDFs, user exports | Search the journals that publish the claim's actual construct and method, not just economics outlets. Preserve broad searches for wording absent from indexes, published evidence, lawful full text, and missed records. Search the exact title and authors to resolve promising records and versions. |
 
 Source roles overlap deliberately: one may supply a record another misses or a usable full-text link. Add new routes without reducing the existing broad search. Choose extra series by field, not an identical list for every task. Source reputation, citation counts, and appearing in multiple indexes do not earn a paper support credit.
 

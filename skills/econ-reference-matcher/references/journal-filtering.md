@@ -4,7 +4,7 @@ Journal filters improve relevance and publication fit, but they do not replace c
 
 ## Default Scope
 
-Default to SSCI economics and closely adjacent social-science journals when the user does not specify filters. Adjacent fields may include finance, management, public policy, development, regional studies, labor, innovation, entrepreneurship, and information systems when they directly support the user's economics claim.
+Default to SSCI journals relevant to the manuscript's field when the user does not specify filters. Economics, management, finance, accounting, marketing, information systems, and neighboring social-science journals may all be appropriate when they directly support the target claim. Do not impose an economics field restriction on a business/management manuscript.
 
 Within that scope, actively search strong journals in the relevant field. Verified JCR Q1-Q2, ABS/AJG 3+, FT50, UTD24, or the user's preferred outlets are useful quality signals, not an additional default intersection. Search those outlets before settling for readily accessible lower-ranked matches.
 
@@ -77,7 +77,7 @@ filters:
   accept_if_min_abs_stars: null
   accept_if_ft50: false
   accept_if_utd24: false
-  allowed_fields: ["economics", "finance", "management", "public policy"]
+  allowed_fields: [] # No field restriction unless the user requests one.
   journal_whitelist: []
   journal_blacklist: []
 

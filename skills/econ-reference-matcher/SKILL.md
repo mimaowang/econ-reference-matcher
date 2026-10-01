@@ -1,6 +1,6 @@
 ---
 name: econ-reference-matcher
-description: Use this skill when a user needs economics or adjacent social-science literature that directly supports a manuscript sentence, paragraph, theory claim, or contribution/literature-dialogue claim. Trigger for requests like finding SSCI references for a passage, matching papers to a paragraph, supporting a claim with economics literature, locating theory support, writing literature dialogue, or checking whether candidate papers can really be cited after a sentence. Prefer this skill even when the user only says "find references" if the task involves a paper, manuscript, paragraph, or citeable claim.
+description: Use this skill when a user needs economics or business/management literature that directly supports a manuscript sentence, paragraph, theory claim, or contribution/literature-dialogue claim. This includes management, finance, accounting, marketing, and information-systems papers. Trigger for requests like finding SSCI references for a passage, matching papers to a paragraph, locating theory support, writing literature dialogue, or checking whether candidate papers can really be cited after a sentence. Prefer this skill even when the user only says "find references" if the task involves an economics or business manuscript and a citeable claim.
 ---
 
 # Econ Reference Matcher
@@ -39,6 +39,7 @@ For every final paper, make the manuscript use explicit: state how it can be cit
    - Read the user's manuscript, chapter, abstract, introduction, theory section, or pasted context when available.
    - If only a sentence or paragraph is provided, proceed but state that lack of manuscript context reduces matching precision.
    - Identify the paper's research question, setting, outcome variables, mechanism, method, and intended contribution if they can be inferred.
+   - Identify the manuscript's field so discovery starts in the literature that actually studies its claim.
 
 2. **Decompose the target passage into citeable claims.**
    - Extract the claims that actually need support.
@@ -49,13 +50,13 @@ For every final paper, make the manuscript use explicit: state how it can be cit
 
 3. **Apply project filters.**
    - Look for `.econ-reference-matcher/config.yml`. If missing and the user has recurring requirements, offer to create one.
-   - Default to SSCI economics or closely adjacent social-science journals unless the user specifies otherwise.
+   - Default to SSCI journals relevant to the manuscript's field unless the user specifies otherwise.
    - Search strong journals in the relevant field first. Distinguish hard eligibility rules from quality preferences; justify any exception to a preference instead of quietly lowering the shortlist's quality.
    - Treat journal rankings as constraints only when they are verified through user-provided lists, Web of Science/Clarivate/JCR access, journal pages, or other traceable evidence.
    - Read `references/journal-filtering.md` when filters matter.
 
 4. **Search broadly, then rerank strictly.**
-   - Read `references/workflow.md` for claim-based queries, source roles, and citation expansion. Use RePEc/IDEAS as an economics starting point; add authorized EconLit access, field-relevant working-paper series, and citation-neighbor searches to the existing OpenAlex, Crossref, web, publisher, DOI, OA PDF, and user-export searches.
+   - Read `references/workflow.md` for claim-based queries, field-specific source roles, and citation expansion. Start economics searches with RePEc/IDEAS; for other business fields, start with broad indexes and the field's journals, adding relevant working-paper series and authorized databases. Keep OpenAlex, Crossref, web, publisher, DOI, OA PDF, and user-export searches available across fields.
    - For non-trivial tasks, aim to inspect roughly 30-50 distinct plausible studies in the initial broad pass, then follow promising leads and unresolved claims. This is not a ceiling or a budget to divide among more sources.
    - Trace references and later citations of strong seeds, including contrasting findings. Search both strong journals and the broader literature; compare alternatives before settling on the first 3-5 papers.
    - Track what was actually searched and read. For each promising working paper, actively look for a published journal version before final selection; follow the version-resolution step in `references/workflow.md`. Cite the verified, eligible journal version rather than the working paper, without treating their findings as interchangeable.

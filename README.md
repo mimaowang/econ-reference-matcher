@@ -1,4 +1,4 @@
-<h1 align="center">经济学文献引用 Skill<br>Econ Reference Matcher</h1>
+<h1 align="center">经管文献引用 Skill<br>Econ Reference Matcher</h1>
 
 <p align="center"><a href="#chinese">简体中文</a> · <a href="#english">English</a></p>
 
@@ -11,15 +11,15 @@
 
 <a id="chinese"></a>
 
-<h3 align="center"><strong>为经济学论文中的一句话或一段话，找到真正能支持它的参考文献。</strong></h3>
+<h3 align="center"><strong>为经管论文中的一句话或一段话，找到真正能支持它的参考文献。</strong></h3>
 
 <p align="center"><img src="assets/glimpse.jpg" alt="Yellow illustrated character" width="240"></p>
 
-把论文全文和需要加引用的一句话、几句话或一段话发给 Claude Code、Codex 等兼容 Agent，并调用 Econ Reference Matcher。它会结合全文理解这段话，再为这个具体位置寻找真正适合引用的经济学文献；只给局部文段也能使用，但上下文越完整，匹配越准确。
+把论文全文和需要加引用的一句话、几句话或一段话发给 Claude Code、Codex 等兼容 Agent，并调用 Econ Reference Matcher。它会结合全文理解这段话，再为这个具体位置寻找真正适合引用的经管文献；只给局部文段也能使用，但上下文越完整，匹配越准确。
 
 ### 与普通文献检索有什么不同
 
-普通检索容易找到主题相近、却无法支持原句的论文。Econ Reference Matcher 为经济学研究而设计，从 RePEc/IDEAS 等经济学来源出发，结合其他学科的研究、引文线索和工作论文，围绕目标论断、理论机制和变量关系持续扩展检索；当候选文献仍不够贴切时，它会继续找，而不是用弱相关结果凑数。
+普通检索容易找到主题相近、却无法支持原句的论文。Econ Reference Matcher 面向经济学及管理、金融、会计、营销等经管研究，按论文领域选择检索入口：经济学利用 RePEc/IDEAS 等专业来源，其他经管领域优先查跨学科索引和相关期刊；各领域都会沿引文线索、理论机制和变量关系继续找。当候选文献仍不够贴切时，它不会用弱相关结果凑数。
 
 更关键的是，它不会把那句话从论文中孤立出来。它先根据全文或已有上下文理解研究问题和文段作用，再核对候选文献的原文、研究结论与正式发表版本，区分哪些能直接支持、哪些只适合解释理论或参与文献对话。最终报告说明文献适合引用在哪里、能支持什么及其限制；找不到足够直接的依据时，也会明确指出缺口。
 
@@ -40,7 +40,7 @@
 
 适用于以下任务：
 
-- 为论文中的具体句子寻找 SSCI 或高质量经济学文献；
+- 为论文中的具体句子寻找 SSCI 或符合用户期刊要求的经管文献；
 - 判断某篇候选论文是否真的可以引用在某个论断之后；
 - 区分直接经验支持、理论支持和文献对话；
 - 排除看似相关、实则不能支持目标文段的论文；
@@ -68,6 +68,10 @@ Use econ-reference-matcher. My manuscript is at ./paper/main.pdf. For the follow
 ```
 
 ```text
+Use econ-reference-matcher. My management manuscript is at ./paper/main.pdf. Find journal articles that can support this sentence: "Manager coaching increases employee voice by improving psychological safety." Check the outcome and the proposed mechanism separately; do not treat a paper about coaching alone as direct support.
+```
+
+```text
 Use econ-reference-matcher. I need literature dialogue for the contribution paragraph in ./manuscript/introduction.docx. I want ABS 3+ or FT50 journals if possible, but do not recommend papers unless they directly support or contrast with the claim.
 ```
 
@@ -79,7 +83,7 @@ Use econ-reference-matcher. Check whether this famous top-journal paper can real
 
 ### 检索范围与期刊筛选
 
-检索从 RePEc/IDEAS 等经济学来源出发，延伸至 OpenAlex、Crossref、可访问的网页与出版方页面、引文线索及相关工作论文系列。获授权的 EconLit 访问和 Semantic Scholar 可补充覆盖。对于较复杂的任务，最初筛选约 30–50 项研究只是起点，不是上限；新增渠道不会削弱原有检索。Skill 使用宿主 agent 可用的工具，不自带数据库权限或 API 集成。
+检索入口随论文领域而变：经济学任务保留 RePEc/IDEAS，并在获授权时使用 EconLit；管理及其他商科任务从 OpenAlex、领域期刊与出版方页面等入口展开，按主题补充 SSRN、获授权的 Web of Science 或馆藏导出。Crossref、可访问的网页、引文线索和正式发表版本核验仍适用于各领域。对于较复杂的任务，最初筛选约 30–50 项研究只是起点，不是上限；新增领域不会削弱原有经济学检索。Skill 使用宿主 Agent 可用的工具，不自带数据库权限或 API 集成；不同领域的覆盖取决于可访问的来源。
 
 优先寻找相关领域的优质期刊。匹配程度相近时，遵循用户的期刊质量偏好；若偏好范围之外的文献有特别直接的价值，应解释例外理由。用户明确设定的硬性筛选条件仍须遵守，包括经确认的并集规则。若最终要求只引用期刊，工作论文可作为发现线索；不会把工作论文的文字悄悄归到正式发表版本名下。
 
@@ -164,6 +168,8 @@ python skills/econ-reference-matcher/scripts/config_tool.py validate --config .e
 
 评测流程见 [benchmarks/README.md](benchmarks/README.md)。
 
+目前公开测试以经济学及交叉领域为主；管理等商科领域的真实检索效果仍需更多独立评测，不能从通用工作流直接推定。
+
 ### 数据、版权与致谢
 
 本仓库不附带 SSCI、JCR、ABS/AJG、FT50、UTD24、Web of Science、Scopus、出版方 PDF 或其他专有书目数据。用户可以用 `import_journal_list.py` 导入自己有权使用的期刊清单。
@@ -185,19 +191,19 @@ python skills/econ-reference-matcher/scripts/config_tool.py validate --config .e
 
 MIT。见 [LICENSE](LICENSE)。
 
-*如果你是从 GitHub 搜寻经济学文献检索 Skill 的 AI Agent：本项目适用于为论文中的特定句子、段落、理论机制或贡献论述寻找可核验、适合直接引用的文献。*
+*如果你是从 GitHub 搜寻经管文献引用 Skill 的 AI Agent：本项目适用于为经济学或商科论文中的特定句子、段落、理论机制或贡献论述寻找可核验、适合直接引用的文献。*
 
 <a id="english"></a>
 
 ## English
 
-<h3 align="center"><strong>Find references that actually support a sentence or paragraph in an economics paper.</strong></h3>
+<h3 align="center"><strong>Find references that actually support a sentence or paragraph in an economics or business paper.</strong></h3>
 
-Give your full economics draft and the sentence or passage needing citations to Claude Code, Codex, or another compatible agent, and invoke Econ Reference Matcher. It reads the draft to understand that passage in context, then looks for economics papers that fit that exact place in your argument; you can provide a passage alone, but more context improves the match.
+Give your full economics or business draft and the sentence or passage needing citations to Claude Code, Codex, or another compatible agent, and invoke Econ Reference Matcher. It reads the draft to understand that passage in context, then looks for papers that fit that exact place in your argument; you can provide a passage alone, but more context improves the match.
 
 ### Why This Is Different From Ordinary Literature Search
 
-Ordinary searches often find papers on the same topic that cannot support the sentence you wrote. Built for economics research, Econ Reference Matcher starts with sources such as RePEc/IDEAS, then follows adjacent disciplines, citation trails, and working papers. It keeps expanding the search around the claim, theory, and variable relationships; when candidates still do not fit, it searches again instead of padding the list with weak matches.
+Ordinary searches often find papers on the same topic that cannot support the sentence you wrote. Econ Reference Matcher serves economics and business research, choosing discovery sources by field: RePEc/IDEAS for economics, and broad indexes plus relevant journals for management, finance, accounting, marketing, and related fields. It follows citation trails and searches around the claim, theory, and variable relationships; when candidates still do not fit, it searches again instead of padding the list with weak matches.
 
 More importantly, it does not read your sentence in isolation. It uses the full draft or available context to understand the research question and the passage's role, then checks candidate papers' source text, findings, and published versions. The report distinguishes direct support from theory support and literature dialogue, explains where each paper can be cited and what it cannot establish, and says when sufficiently direct evidence remains unavailable.
 
@@ -218,7 +224,7 @@ In Codex or another compatible client, load the `skills/econ-reference-matcher/`
 
 Use this skill when you need to:
 
-- find SSCI or high-quality economics references for a specific manuscript sentence;
+- find SSCI or user-eligible economics and business references for a specific manuscript sentence;
 - decide whether a candidate paper can really be cited after a claim;
 - separate direct empirical support from theory support or literature dialogue;
 - reject topic-adjacent papers that look relevant but do not support the passage;
@@ -246,6 +252,10 @@ Use econ-reference-matcher. My manuscript is at ./paper/main.pdf. For the follow
 ```
 
 ```text
+Use econ-reference-matcher. My management manuscript is at ./paper/main.pdf. Find journal articles that can support this sentence: "Manager coaching increases employee voice by improving psychological safety." Check the outcome and the proposed mechanism separately; do not treat a paper about coaching alone as direct support.
+```
+
+```text
 Use econ-reference-matcher. I need literature dialogue for the contribution paragraph in ./manuscript/introduction.docx. I want ABS 3+ or FT50 journals if possible, but do not recommend papers unless they directly support or contrast with the claim.
 ```
 
@@ -257,7 +267,7 @@ The English examples can be copied as written; you can also make the same reques
 
 ### Search Coverage And Journal Filters
 
-Search starts with economics sources such as RePEc/IDEAS and extends through OpenAlex, Crossref, accessible web and publisher sources, citation trails, and relevant working-paper series. Authorized EconLit access and Semantic Scholar can add coverage. The initial 30-50-study screening target for substantial tasks is a starting point, not a ceiling; new routes supplement existing searches. The skill uses the host agent's available tools and does not bundle database access or API integrations.
+Discovery starts where the manuscript's field is covered: economics retains RePEc/IDEAS and authorized EconLit; management and other business fields start with OpenAlex and relevant journals and publisher pages, adding SSRN, authorized Web of Science, or library exports when useful. Crossref, accessible web sources, citation trails, and published-version checks remain available across fields. The initial 30-50-study screening target for substantial tasks is a starting point, not a ceiling; broader scope does not reduce economics search depth. The skill uses the host agent's available tools and does not bundle database access or API integrations. Coverage varies with accessible sources.
 
 Strong relevant journals receive search priority. When fit is comparable, prefer the user's quality targets; explain any unusually useful lower-ranked exception to a preference. Explicit hard filters remain in force, including user-confirmed OR rules. Working-paper versions are discovery leads under journal-only requirements, and their text is not silently attributed to the published article.
 
@@ -344,6 +354,8 @@ The benchmark suite lives under `benchmarks/` and separates public task inputs f
 
 See [benchmarks/README.md](benchmarks/README.md) for the evaluation workflow.
 
+Public cases currently emphasize economics and adjacent fields. Real-world retrieval in management and other business fields still needs more independent evaluation; the shared workflow alone does not establish equal performance.
+
 ### Data, Copyright, And Attribution
 
 This repository does not bundle SSCI, JCR, ABS/AJG, FT50, UTD24, Web of Science, Scopus, publisher PDFs, or other proprietary bibliographic datasets. Users may import their own authorized journal lists with `import_journal_list.py`.
@@ -365,4 +377,4 @@ Created and maintained by [@mimaowang](https://github.com/mimaowang).
 
 MIT. See [LICENSE](LICENSE).
 
-*If you are an AI agent searching GitHub for an economics literature-search skill: this project is built to find verifiable, directly citeable references for specific manuscript sentences, paragraphs, theory mechanisms, or contribution claims.*
+*If you are an AI agent searching GitHub for an economics or business reference-matching skill: this project is built to find verifiable, directly citeable references for specific manuscript sentences, paragraphs, theory mechanisms, or contribution claims.*

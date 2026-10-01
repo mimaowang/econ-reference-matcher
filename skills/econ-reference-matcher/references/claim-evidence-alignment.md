@@ -81,7 +81,7 @@ When the best candidates are weak:
 
 - Rewrite the query around the mechanism rather than the topic.
 - Search for foundational theory instead of recent empirical papers.
-- Search adjacent economics fields: industrial organization, development, finance, management, public policy, labor, regional science.
+- Search neighboring fields relevant to the claim: for example industrial organization and development for economics, or strategy, organizational behavior, accounting, marketing, and information systems for business research.
 - Search review articles to identify canonical references.
 - Consider whether the user's target sentence is too strong and should be softened.
 - Ask the user for manuscript context or a candidate PDF only when it would materially improve the judgment.

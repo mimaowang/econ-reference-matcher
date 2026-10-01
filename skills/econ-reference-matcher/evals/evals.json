@@ -80,6 +80,20 @@
         "P5w's mechanism quote and page 8 are not attributed to P5j; the journal result is limited to the verified relationship.",
         "The run does not invent additional papers to meet a three-paper target."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Use econ-reference-matcher for this closed-corpus management exercise. All papers and journal labels are fictional and authoritative only for this exercise. Do not browse or invent papers. Target sentence: 'Manager coaching increases employee voice by improving psychological safety.' Corpus: M1 is a verified SSCI management article finding that coaching increases employee voice, but it does not test psychological safety. M2 is a verified SSCI management article testing coaching, psychological safety, and employee voice; its reported mediation result supports the full target sentence. M3 is a prestigious economics article on managerial incentives and employee productivity; it studies neither employee voice nor psychological safety. M4 is a verified SSCI management theory article explaining why psychological safety can enable employee voice, but it does not study manager coaching. Map the outcome and mediation claims separately, classify each paper's use, and give a citation sentence that does not overstate the evidence. Fewer than three direct-support articles is acceptable. Report in English.",
+      "expected_output": "A management-field claim map that identifies M2 as direct support for the full claim, limits M1 to the outcome relationship, uses M4 only for theory, and rejects prestige-based M3 as direct support.",
+      "files": [],
+      "expectations": [
+        "The report separates the coaching-to-voice relationship from the psychological-safety mediation claim.",
+        "M2 is the only supplied article classified as direct support for the full sentence.",
+        "M1 supports only the coaching-to-voice relationship and is not cited for mediation.",
+        "M4 is classified as theory support, not empirical evidence that coaching causes voice through safety.",
+        "M3 is rejected as direct support despite its prestige and related managerial topic.",
+        "The report does not pad the direct-support shortlist or invent quotations, DOI values, or additional papers."
+      ]
     }
   ]
 }

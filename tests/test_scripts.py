@@ -36,6 +36,7 @@ class ConfigToolTests(unittest.TestCase):
         data = config_tool.minimal_yaml_load(config_tool.DEFAULT_CONFIG)
         errors, warnings = config_tool.validate_config(data)
         self.assertEqual(errors, [])
+        self.assertEqual(data["filters"]["allowed_fields"], [])
         self.assertTrue(any("SSCI" in warning for warning in warnings))
 
     def test_union_filter_config_validates(self) -> None:

@@ -32,7 +32,8 @@ filters:
   accept_if_min_abs_stars: null
   accept_if_ft50: false
   accept_if_utd24: false
-  allowed_fields: ["economics", "finance", "management", "public policy"]
+  # Empty means no field restriction. Add fields only when the user requests one.
+  allowed_fields: []
   journal_whitelist: []
   journal_blacklist: []
   min_publication_year: null
