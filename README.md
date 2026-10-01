@@ -11,15 +11,17 @@
 
 <a id="chinese"></a>
 
-<p align="center"><img src="assets/glimpse.jpg" alt="Yellow illustrated character" width="240"></p>
-
-## 简体中文
-
 <h3 align="center"><strong>为经济学论文中的一句话或一段话，找到真正能支持它的参考文献。</strong></h3>
 
-写经济学论文时，把全文和需要引用的句子或段落交给 Econ Reference Matcher。这个 Skill 可用于 Claude Code、Codex 等兼容 Agent：它先读全文理解上下文，再广泛检索，逐篇判断哪些研究真的支持那句话。
+<p align="center"><img src="assets/glimpse.jpg" alt="Yellow illustrated character" width="240"></p>
 
-主题相近的论文未必能作为引用。这个 Skill 会追查原文、研究结论和正式发表版本，说明文献适合引用在哪里、能支持什么；证据不足时继续检索，或明确告诉你缺口。只有局部文段时也能使用，但缺少全文可能降低匹配精度。
+把论文全文和需要加引用的一句话、几句话或一段话发给 Claude Code、Codex 等兼容 Agent，并调用 Econ Reference Matcher。它会结合全文理解这段话，再为这个具体位置寻找真正适合引用的经济学文献；只给局部文段也能使用，但上下文越完整，匹配越准确。
+
+### 与普通文献检索有什么不同
+
+普通检索容易找到主题相近、却无法支持原句的论文。Econ Reference Matcher 为经济学研究而设计，从 RePEc/IDEAS 等经济学来源出发，结合其他学科的研究、引文线索和工作论文，围绕目标论断、理论机制和变量关系持续扩展检索；当候选文献仍不够贴切时，它会继续找，而不是用弱相关结果凑数。
+
+更关键的是，它不会把那句话从论文中孤立出来。它先根据全文或已有上下文理解研究问题和文段作用，再核对候选文献的原文、研究结论与正式发表版本，区分哪些能直接支持、哪些只适合解释理论或参与文献对话。最终报告说明文献适合引用在哪里、能支持什么及其限制；找不到足够直接的依据时，也会明确指出缺口。
 
 ### 快速开始
 
@@ -75,18 +77,7 @@ Use econ-reference-matcher. Check whether this famous top-journal paper can real
 
 上述英文示例可以直接复制使用；你也可以用中文提出相同要求。报告说明默认跟随用户使用的语言，书目信息保留原文。
 
-### 与普通文献检索有什么不同
-
-很多 AI 文献检索会返回主题相近、却不适合放在原句后引用的论文。这个 Skill 按以下顺序工作：
-
-1. 在可用时阅读论文上下文。
-2. 将目标文段拆解为具体论断。
-3. 从论断措辞、机制、变量、理论及邻近文献广泛检索。
-4. 根据文献能否支撑准确论断重新排序。
-5. 用短摘录和原文位置核验证据。
-6. 明确标注弱匹配，不把它们混进最终推荐。
-
-最合适的文献不一定最有名，而是你引用它时不会夸大其研究结果的文献。
+### 检索范围与期刊筛选
 
 检索从 RePEc/IDEAS 等经济学来源出发，延伸至 OpenAlex、Crossref、可访问的网页与出版方页面、引文线索及相关工作论文系列。获授权的 EconLit 访问和 Semantic Scholar 可补充覆盖。对于较复杂的任务，最初筛选约 30–50 项研究只是起点，不是上限；新增渠道不会削弱原有检索。Skill 使用宿主 agent 可用的工具，不自带数据库权限或 API 集成。
 
@@ -200,9 +191,13 @@ MIT。见 [LICENSE](LICENSE)。
 
 <h3 align="center"><strong>Find references that actually support a sentence or paragraph in an economics paper.</strong></h3>
 
-If you're writing an economics paper, give Econ Reference Matcher your draft and the sentence or paragraph that needs a citation. This skill works in Claude Code, Codex, and other compatible agents: it reads the draft for context, searches widely, and checks which studies truly support that passage.
+Give your full economics draft and the sentence or passage needing citations to Claude Code, Codex, or another compatible agent, and invoke Econ Reference Matcher. It reads the draft to understand that passage in context, then looks for economics papers that fit that exact place in your argument; you can provide a passage alone, but more context improves the match.
 
-Papers on a similar topic may still be wrong for your citation. The skill checks source text, findings, and published versions, then explains where each paper belongs and what it supports; when evidence is thin, it keeps searching or reports the gap. You can also provide a passage alone, but the missing context may reduce matching accuracy.
+### Why This Is Different From Ordinary Literature Search
+
+Ordinary searches often find papers on the same topic that cannot support the sentence you wrote. Built for economics research, Econ Reference Matcher starts with sources such as RePEc/IDEAS, then follows adjacent disciplines, citation trails, and working papers. It keeps expanding the search around the claim, theory, and variable relationships; when candidates still do not fit, it searches again instead of padding the list with weak matches.
+
+More importantly, it does not read your sentence in isolation. It uses the full draft or available context to understand the research question and the passage's role, then checks candidate papers' source text, findings, and published versions. The report distinguishes direct support from theory support and literature dialogue, explains where each paper can be cited and what it cannot establish, and says when sufficiently direct evidence remains unavailable.
 
 ### Quick Start
 
@@ -258,18 +253,7 @@ Use econ-reference-matcher. Check whether this famous top-journal paper can real
 
 The English examples can be copied as written; you can also make the same requests in Chinese. Explanations follow the user's language by default, while bibliographic information stays in its original language.
 
-### Why This Is Different From Ordinary Literature Search
-
-Many AI literature searches return papers that are close in topic but weak as citations. This skill uses a stricter sequence:
-
-1. Read the manuscript context when available.
-2. Decompose the target passage into claims.
-3. Search broadly across claim wording, mechanisms, variables, theory, and adjacent literatures.
-4. Rerank by whether the paper can support the exact claim.
-5. Verify evidence with a short excerpt and location.
-6. Label weak matches instead of hiding them in the final recommendation list.
-
-The best paper is not necessarily the most famous paper. The best paper is the one that can be cited without overstating what it shows.
+### Search Coverage And Journal Filters
 
 Search starts with economics sources such as RePEc/IDEAS and extends through OpenAlex, Crossref, accessible web and publisher sources, citation trails, and relevant working-paper series. Authorized EconLit access and Semantic Scholar can add coverage. The initial 30-50-study screening target for substantial tasks is a starting point, not a ceiling; new routes supplement existing searches. The skill uses the host agent's available tools and does not bundle database access or API integrations.
 
