@@ -4,6 +4,8 @@ This benchmark suite tests whether `econ-reference-matcher` solves its core prob
 
 The benchmark is intentionally split into public task files and private gold answers. Agents running the skill should only see public task files. Graders read private gold files only after a run is complete.
 
+`run_benchmark.py` prepares run directories; it does not launch agents or enforce filesystem isolation. For sealed evaluations, run each agent with access limited to its task inputs and, for `with_skill`, the skill files. Keep `private-gold/` and grading outputs outside that agent's accessible workspace. A `SKIP` from `leak_check.py` means no sealed gold was available to check, not that the task passed a gold-leak scan.
+
 ## Layout
 
 ```text

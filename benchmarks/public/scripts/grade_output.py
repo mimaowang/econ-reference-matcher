@@ -33,44 +33,45 @@ def evidence_markers(text: str) -> int:
     return sum(1 for marker in markers if marker in text)
 
 
-def category_near_title(text: str, title: str, category: str) -> bool:
-    if not title or title not in text:
-        return False
-    title_index = text.find(title)
-    window = text[title_index : title_index + 1500]
-    return category in window
-
-
-def window_near_title(text: str, title: str, before: int = 600, after: int = 1500) -> str:
-    if not title or title not in text:
-        return ""
-    title_index = text.find(title)
-    start = max(0, title_index - before)
-    return text[start : title_index + after]
-
-
-def rejected_near_title(text: str, title: str) -> bool:
-    window = window_near_title(text, title)
-    rejection_terms = [
-        "Topic Adjacent / Rejected",
-        "Rejected Topic-Adjacent",
-        "Rejected Decoy",
-        "Rejected",
-        "Reject",
-        "Do not use",
-        "not suitable",
+def recommendation_blocks(text: str) -> list[tuple[str, str]]:
+    return [
+        (match.group(1).strip(), match.group(2))
+        for match in re.finditer(
+            r"^###\s+\d+\.\s+([^\n]+)\n(.*?)(?=^#{2,3}\s|\Z)",
+            text,
+            flags=re.MULTILINE | re.DOTALL,
+        )
     ]
-    return any(term.lower() in window.lower() for term in rejection_terms)
 
 
-def direct_support_label_near_title(text: str, title: str) -> bool:
-    window = window_near_title(text, title, before=200, after=1200)
-    direct_patterns = [
-        r"Category:\s*\**Direct Support",
-        r"Direct support judgment\s*\|[^\n]*Direct support",
-        r"Direct support:\s*\**" + re.escape(title),
+def matching_blocks(text: str, item: dict[str, Any]) -> list[str]:
+    title = normalize(str(item.get("title", "")))
+    doi = normalize(str(item.get("doi", "")))
+    return [
+        body
+        for heading, body in recommendation_blocks(text)
+        if (title and title in normalize(heading)) or (doi and doi in normalize(body))
     ]
-    return any(re.search(pattern, window, flags=re.IGNORECASE) for pattern in direct_patterns)
+
+
+def block_category(body: str) -> str:
+    match = re.search(
+        r"^\s*[-*]\s+(?:\*\*)?Category:(?:\*\*)?\s*(.+)$",
+        body,
+        flags=re.MULTILINE | re.IGNORECASE,
+    )
+    return match.group(1).strip(" *") if match else ""
+
+
+def rejected_near_title(text: str, item: dict[str, Any]) -> bool:
+    if any(block_category(body).lower() == "topic adjacent / rejected" for body in matching_blocks(text, item)):
+        return True
+    section = re.search(
+        r"^##\s+Rejected[^\n]*\n(.*?)(?=^##\s|\Z)",
+        text,
+        flags=re.MULTILINE | re.DOTALL | re.IGNORECASE,
+    )
+    return bool(section and contains(section.group(1), str(item.get("title", ""))))
 
 
 def grade(report_text: str, gold: dict[str, Any], task_id: str, run_id: str) -> dict[str, Any]:
@@ -80,7 +81,7 @@ def grade(report_text: str, gold: dict[str, Any], task_id: str, run_id: str) -> 
 
     # Canary leakage
     leaked_canaries = [c for c in gold.get("canaries", []) if c and c in report_text]
-    if leaked_canaries:
+    if leaked_canaries or re.search(r"CANARY_[A-Z0-9_]+", report_text):
         critical_failures.append("private_gold_leakage")
 
     has_claim_map = "Claim Map" in report_text or "claim map" in report_text.lower()
@@ -93,13 +94,10 @@ def grade(report_text: str, gold: dict[str, Any], task_id: str, run_id: str) -> 
         critical_failures.append("missing_claim_map")
 
     must_find = gold.get("must_find", [])
-    must_title_hits = count_present(report_text, must_find, "title")
-    must_doi_hits = count_present(report_text, must_find, "doi")
-    direct_hit_ratio = min(1.0, (must_title_hits + must_doi_hits) / max(1, len(must_find)))
+    direct_hit_ratio = sum(bool(matching_blocks(report_text, item)) for item in must_find) / max(1, len(must_find))
     direct_category_hits = sum(
-        1
+        any(block_category(body).lower() == "direct support" for body in matching_blocks(report_text, item))
         for item in must_find
-        if category_near_title(report_text, str(item.get("title", "")), "Direct Support")
     )
     dimensions["direct_support_precision"] = DIMENSIONS["direct_support_precision"] * min(
         1.0, 0.6 * direct_hit_ratio + 0.4 * (direct_category_hits / max(1, len(must_find)))
@@ -109,12 +107,10 @@ def grade(report_text: str, gold: dict[str, Any], task_id: str, run_id: str) -> 
     rejected_decoys = 0
     direct_decoys = 0
     for item in forbidden:
-        title = str(item.get("title", ""))
-        if contains(report_text, title):
-            if direct_support_label_near_title(report_text, title) and not rejected_near_title(report_text, title):
-                direct_decoys += 1
-            if rejected_near_title(report_text, title):
-                rejected_decoys += 1
+        if any(block_category(body).lower() == "direct support" for body in matching_blocks(report_text, item)):
+            direct_decoys += 1
+        elif rejected_near_title(report_text, item):
+            rejected_decoys += 1
     if direct_decoys:
         critical_failures.append("forbidden_decoy_labeled_direct_support")
     dimensions["decoy_rejection"] = DIMENSIONS["decoy_rejection"] * (
@@ -153,7 +149,7 @@ def grade(report_text: str, gold: dict[str, Any], task_id: str, run_id: str) -> 
         caps.append(60)
     if "missing_claim_map" in critical_failures:
         caps.append(70)
-    if re.search(r"CANARY_[A-Z0-9_]+", report_text):
+    if "private_gold_leakage" in critical_failures:
         caps.append(0)
     if caps:
         total = min(total, min(caps))

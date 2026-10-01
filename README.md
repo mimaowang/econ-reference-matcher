@@ -174,6 +174,8 @@ python skills/econ-reference-matcher/scripts/config_tool.py validate --config .e
 
 ### 贡献与安全
 
+创建者与维护者：[@mimaowang](https://github.com/mimaowang)。
+
 - 贡献指南：[CONTRIBUTING.md](CONTRIBUTING.md)
 - 安全政策：[SECURITY.md](SECURITY.md)
 - 行为准则：[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
@@ -351,6 +353,8 @@ Do not commit private manuscripts, paywalled article text, proprietary database 
 See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for project influences and attribution notes. See [NOTICE.md](NOTICE.md) for third-party code, data, and copyright notices.
 
 ### Contributing And Security
+
+Created and maintained by [@mimaowang](https://github.com/mimaowang).
 
 - Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 - Security policy: [SECURITY.md](SECURITY.md)

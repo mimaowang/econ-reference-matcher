@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -82,6 +84,14 @@ journal_lists:
         self.assertIsNone(filters["min_abs_stars"])
         self.assertFalse(filters["require_ft50"])
         self.assertFalse(filters["require_utd24"])
+
+    def test_boolean_is_not_a_valid_abs_star_count(self) -> None:
+        data = config_tool.minimal_yaml_load(config_tool.DEFAULT_CONFIG)
+        data["filters"]["min_abs_stars"] = True
+        data["filters"]["accept_if_min_abs_stars"] = False
+        errors, _ = config_tool.validate_config(data)
+        self.assertTrue(any("filters.min_abs_stars" in error for error in errors))
+        self.assertTrue(any("filters.accept_if_min_abs_stars" in error for error in errors))
 
 
 class CandidateNormalizationTests(unittest.TestCase):
@@ -188,6 +198,94 @@ class BenchmarkCommonTests(unittest.TestCase):
             (gold_dir / "E001.gold.json").write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaises(FileNotFoundError):
                 common.load_gold("E001", gold_dir)
+
+
+class BenchmarkGraderTests(unittest.TestCase):
+    def grade_report(self, report: str, gold: dict) -> dict:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "E999.gold.json").write_text(json.dumps({"task_id": "E999", **gold}), encoding="utf-8")
+            (root / "report.md").write_text(report, encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "benchmarks/public/scripts/grade_output.py"),
+                    "--task-id", "E999", "--report", str(root / "report.md"),
+                    "--gold-dir", str(root), "--output", str(root / "grading.json"),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertIn(result.returncode, (0, 1), result.stderr)
+            return json.loads((root / "grading.json").read_text(encoding="utf-8"))
+
+    def test_one_paper_title_and_doi_count_once(self) -> None:
+        gold = {"must_find": [
+            {"title": "Paper A", "doi": "10.0000/a"},
+            {"title": "Paper B", "doi": "10.0000/b"},
+        ]}
+        report = "## Final Recommendations\n### 1. Paper A\n- **Category:** Direct Support\n- **DOI / URL:** 10.0000/a\n"
+        result = self.grade_report(report, gold)
+        self.assertEqual(result["dimensions"]["direct_support_precision"], 12.5)
+
+    def test_decoy_in_final_list_is_not_excused_by_rejection_section(self) -> None:
+        gold = {"forbidden_decoys": [{"title": "Decoy Paper"}]}
+        report = (
+            "## Final Recommendations\n### 1. Decoy Paper\n- **Category:** Direct Support\n\n"
+            "## Rejected Topic-Adjacent Candidates\nSome other paper was rejected.\n"
+        )
+        result = self.grade_report(report, gold)
+        self.assertIn("forbidden_decoy_labeled_direct_support", result["critical_failures"])
+        self.assertEqual(result["dimensions"]["decoy_rejection"], 0)
+
+    def test_custom_canary_leak_invalidates_score(self) -> None:
+        result = self.grade_report("PRIVATE_MARKER_123", {"canaries": ["PRIVATE_MARKER_123"]})
+        self.assertTrue(result["invalid"])
+        self.assertEqual(result["total_score"], 0)
+
+
+class BenchmarkLeakCheckTests(unittest.TestCase):
+    def test_missing_gold_is_reported_as_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            task = root / "tasks" / "E999-test"
+            task.mkdir(parents=True)
+            (task / "target_passages.json").write_text('{"id":"E999"}', encoding="utf-8")
+            gold_dir = root / "gold"
+            gold_dir.mkdir()
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "benchmarks/public/scripts/leak_check.py"),
+                 "--tasks", str(root / "tasks"), "--gold", str(gold_dir)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0)
+            self.assertIn("E999: SKIP", result.stdout)
+
+    def test_cli_does_not_print_private_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            task = root / "tasks" / "E999-test"
+            task.mkdir(parents=True)
+            (task / "target_passages.json").write_text('{"id":"E999"}', encoding="utf-8")
+            (task / "prompt.md").write_text("PRIVATE_MARKER_123", encoding="utf-8")
+            gold_dir = root / "gold"
+            gold_dir.mkdir()
+            (gold_dir / "E999.gold.json").write_text(
+                '{"task_id":"E999","canaries":["PRIVATE_MARKER_123"]}', encoding="utf-8"
+            )
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "benchmarks/public/scripts/leak_check.py"),
+                 "--tasks", str(root / "tasks"), "--gold", str(gold_dir)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("LEAK", result.stdout)
+            self.assertNotIn("PRIVATE_MARKER_123", result.stdout + result.stderr)
 
 
 if __name__ == "__main__":
