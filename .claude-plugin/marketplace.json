@@ -11,11 +11,11 @@
     {
       "name": "econ-reference-matcher",
       "description": "Find economics and business references that directly support manuscript sentences, paragraphs, theory claims, and literature-dialogue claims, with configurable journal filters and evidence checks.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/econ-reference-matcher"
-      ]
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/mimaowang/econ-reference-matcher.git",
+        "path": "skills"
+      }
     }
   ]
 }

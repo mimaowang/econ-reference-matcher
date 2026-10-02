@@ -3,11 +3,11 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Use econ-reference-matcher. My manuscript excerpt is in evals/files/manuscript_excerpt.md. For the target passage in evals/files/target_passages.md, find SSCI economics or adjacent social-science papers that can directly support the sentence. Do not include papers that are only about digital platforms in general.",
+      "prompt": "Use econ-reference-matcher. My manuscript excerpt is in benchmarks/evals/files/manuscript_excerpt.md. For the target passage in benchmarks/evals/files/target_passages.md, find SSCI economics or adjacent social-science papers that can directly support the sentence. Do not include papers that are only about digital platforms in general.",
       "expected_output": "A reference-match report that decomposes the target claim, distinguishes direct support from topic-adjacent papers, gives 3-5 final papers if they pass, and does not pad weak candidates.",
       "files": [
-        "evals/files/manuscript_excerpt.md",
-        "evals/files/target_passages.md"
+        "benchmarks/evals/files/manuscript_excerpt.md",
+        "benchmarks/evals/files/target_passages.md"
       ],
       "expectations": [
         "Output includes a claim map for the target passage.",

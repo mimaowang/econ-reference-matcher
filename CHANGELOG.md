@@ -6,6 +6,8 @@ This project follows semantic versioning once formal releases begin.
 
 ## Unreleased
 
+- Separated installation from development files: moved skill evals into `benchmarks/evals/`, limited the Claude Code plugin source to `skills/`, and documented manifest-only marketplace registration. Runtime instructions and helper behavior are unchanged.
+- Included the MIT license in the standalone skill and added runtime-only installation regression tests.
 - Made publication-version resolution explicit for promising working papers, including changed titles, online-first journal articles, journal-based citations, and honest unresolved-publication status.
 - Expanded economics retrieval guidance with source roles, citation expansion, publication-version checks, and actual search-coverage notes while retaining the initial 30-50-study screening target and existing sources.
 - Clarified strong-journal search priority, justified exceptions to preferences, and preservation of explicit eligibility filters.

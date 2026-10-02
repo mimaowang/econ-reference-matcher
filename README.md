@@ -25,16 +25,18 @@
 
 ### 快速开始
 
-在 Claude Code 中添加此仓库作为插件市场，然后安装 Skill：
+在 Claude Code 中只添加市场清单，然后安装运行目录，不需要克隆整个仓库：
 
 ```text
-/plugin marketplace add mimaowang/econ-reference-matcher
+/plugin marketplace add https://raw.githubusercontent.com/mimaowang/econ-reference-matcher/main/.claude-plugin/marketplace.json
 /plugin install econ-reference-matcher@econ-reference-matcher
 ```
 
-本地开发时，也可以将仓库放在 Claude Code 能访问的位置；如果你的 Claude Code 版本支持从本地路径安装插件，可以直接使用该路径。
+市场清单通过 `git-subdir` 指向 `skills/`，只获取运行目录。请使用支持 `git-subdir` 的新版 Claude Code。旧的整仓库市场添加方式仍然可用，但会缓存仓库，因此不推荐用于轻量安装。若已用旧方式添加市场，可先运行 `/plugin marketplace remove econ-reference-matcher`，再执行上面的两条命令；这会卸载旧插件，之后重新安装。开发者测试未发布的本地修改时使用 `claude --plugin-dir ./skills`。
 
-在 Codex 或其他兼容客户端中，按该客户端的 Skill 发现方式加载 `skills/econ-reference-matcher/` 目录。
+在 Codex 中，让内置的 Skill Installer 安装 `https://github.com/mimaowang/econ-reference-matcher/tree/main/skills/econ-reference-matcher`。其他兼容客户端只需按其发现方式安装该目录，不要把仓库根目录当作 Skill 安装。
+
+安装目录只包含 `SKILL.md`、按需读取的 `references/`、辅助 `scripts/`、客户端元数据 `agents/openai.yaml` 和许可证。测试题与示例文稿已移至 `benchmarks/evals/`；benchmark、测试、CI 和仓库文档不会进入 Skill 安装目录，也不需要用户配置。项目配置同样是可选的，直接提供论文和目标文段即可开始。
 
 ### 什么时候使用
 
@@ -113,7 +115,7 @@ Use econ-reference-matcher. Check whether this famous top-journal paper can real
 - 脚本只使用标准库，不需要安装额外的 Python 包。
 - 使用 Skill 需要 Claude Code、Codex 或其他兼容的 agent-skill 客户端。
 
-### 验证仓库
+### 验证仓库（仅维护者）
 
 发布或提交 pull request 前，在仓库根目录运行：
 
@@ -127,7 +129,7 @@ python benchmarks/public/scripts/run_benchmark.py --iteration local-smoke --work
 
 GitHub Actions 工作流会在 push 和 pull request 时运行同类检查。
 
-### 项目配置
+### 项目配置（可选）
 
 Skill 可以读取项目级配置文件：
 
@@ -142,7 +144,7 @@ python skills/econ-reference-matcher/scripts/config_tool.py init --output .econ-
 python skills/econ-reference-matcher/scripts/config_tool.py validate --config .econ-reference-matcher/config.yml
 ```
 
-配置可记录默认期刊筛选、稿件语言、报告语言、引用格式，以及用户提供的期刊清单路径。
+配置可记录默认期刊筛选、稿件语言、报告语言、引用格式，以及用户提供的期刊清单路径。上述命令从仓库根目录运行；只安装了 Skill 的用户，应使用安装目录中的对应脚本路径。不需要创建配置才能使用 Skill。
 
 当用户提出多种可接受的期刊标准时，写入配置前须确认其含义是交集还是并集。所有启用的 `require_*` 条件均须满足时用 `filter_logic: AND`；满足任一 `accept_if_*` 条件即可时用 `filter_logic: OR`，例如“SSCI JCR Q1–Q2 **或** ABS/AJG 3+ **或** FT50 **或** UTD24”。
 
@@ -158,7 +160,7 @@ python skills/econ-reference-matcher/scripts/config_tool.py validate --config .e
 
 使用脚本前可运行 `--help` 查看参数。
 
-### Benchmark
+### Benchmark（仅维护者）
 
 测试套件位于 `benchmarks/`，将公开任务输入与私有密封答案分开：
 
@@ -209,16 +211,18 @@ More importantly, it does not read your sentence in isolation. It uses the full 
 
 ### Quick Start
 
-Add this repository as a Claude Code plugin marketplace, then install the skill:
+In Claude Code, register only the marketplace manifest, then install the runtime directory without cloning the entire repository:
 
 ```text
-/plugin marketplace add mimaowang/econ-reference-matcher
+/plugin marketplace add https://raw.githubusercontent.com/mimaowang/econ-reference-matcher/main/.claude-plugin/marketplace.json
 /plugin install econ-reference-matcher@econ-reference-matcher
 ```
 
-For local development, place this repository where Claude Code can access it and install the plugin from the local path if your Claude Code version supports local plugin installation.
+The manifest uses `git-subdir` to fetch only `skills/`. Use a current Claude Code version that supports `git-subdir`. The old repository-based marketplace registration still works, but caches the repository and is not recommended for a lightweight installation. To switch an existing registration, run `/plugin marketplace remove econ-reference-matcher`, then the two commands above; this uninstalls the old plugin before reinstalling it. Developers testing unpublished local edits should use `claude --plugin-dir ./skills`.
 
-In Codex or another compatible client, load the `skills/econ-reference-matcher/` directory according to that client's skill discovery conventions.
+In Codex, ask the built-in Skill Installer to install `https://github.com/mimaowang/econ-reference-matcher/tree/main/skills/econ-reference-matcher`. In another compatible client, install only that directory using its skill discovery conventions, not the repository root.
+
+The installed skill contains only `SKILL.md`, on-demand `references/`, helper `scripts/`, client metadata in `agents/openai.yaml`, and the license. Development prompts and manuscript fixtures now live in `benchmarks/evals/`. Benchmarks, tests, CI, and repository documentation stay outside the skill installation and need no user configuration. Project configuration is optional too: provide your manuscript and target passage to start.
 
 ### When To Use It
 
@@ -299,7 +303,7 @@ The repository intentionally does not include proprietary journal-ranking datase
 - No Python package installation is required; scripts use the standard library only.
 - Claude Code, Codex, or another compatible agent-skill client for skill usage.
 
-### Validate The Repository
+### Validate The Repository (Maintainers Only)
 
 Run these checks before publishing or opening a pull request:
 
@@ -313,7 +317,7 @@ python benchmarks/public/scripts/run_benchmark.py --iteration local-smoke --work
 
 The GitHub Actions workflow runs the same style of checks on pushes and pull requests.
 
-### Configuration
+### Configuration (Optional)
 
 The skill can use a project-level config file:
 
@@ -328,7 +332,7 @@ python skills/econ-reference-matcher/scripts/config_tool.py init --output .econ-
 python skills/econ-reference-matcher/scripts/config_tool.py validate --config .econ-reference-matcher/config.yml
 ```
 
-The config can record default journal filters, manuscript language, report language, preferred citation style, and user-provided journal-list paths.
+The config can record default journal filters, manuscript language, report language, preferred citation style, and user-provided journal-list paths. The commands above assume a repository checkout; for a skill-only installation, use the corresponding script in the installed skill directory. Creating a config is not required to use the skill.
 
 When users name several acceptable journal standards, confirm whether they mean intersection or union before writing the config. Use `filter_logic: AND` when all active `require_*` fields must pass. Use `filter_logic: OR` with `accept_if_*` fields when any one standard is sufficient, such as "SSCI JCR Q1-Q2 OR ABS/AJG 3+ OR FT50 OR UTD24."
 
@@ -344,7 +348,7 @@ The scripts do not replace scholarly judgment. They make repeated checks more co
 
 Run any script with `--help` before use.
 
-### Benchmarks
+### Benchmarks (Maintainers Only)
 
 The benchmark suite lives under `benchmarks/` and separates public task inputs from private sealed gold answers.
 

@@ -8,9 +8,12 @@ The benchmark is intentionally split into public task files and private gold ans
 
 ## Layout
 
+Everything in this directory is for maintainers, not skill installation or user configuration. `evals/` contains the lightweight development prompts, expected outputs, and fictional manuscript fixtures formerly stored inside the skill. Paths in `evals/evals.json` are relative to the repository root. These are public development checks, not sealed benchmark answers; do not provide their expectations to an agent during a blind evaluation.
+
 ```text
 benchmarks/
 ├── README.md
+├── evals/
 ├── public/
 │   ├── tasks/
 │   ├── rubrics/
