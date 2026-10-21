@@ -7,9 +7,11 @@ license: "MIT"
 authors:
   - name: "mimaowang"
   - name: "econ-reference-matcher contributors"
-abstract: "A Claude Code skill and benchmark suite for matching economics manuscript claims to directly citeable supporting literature."
+abstract: "An agent skill and benchmark suite for matching economics and business manuscript claims to directly citeable supporting literature."
 keywords:
   - "economics"
+  - "business"
+  - "management"
   - "references"
   - "citation"
   - "agent skill"

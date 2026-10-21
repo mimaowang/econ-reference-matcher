@@ -27,6 +27,7 @@ def check_task(task_dir: Path, gold_dir: Path) -> dict[str, object]:
         return {
             "task_id": task_id,
             "valid": True,
+            "checked": False,
             "warnings": [f"No sealed gold found for {task_id}; skipped gold leak scan."],
             "leaks": [],
         }
@@ -49,6 +50,7 @@ def check_task(task_dir: Path, gold_dir: Path) -> dict[str, object]:
     return {
         "task_id": task_id,
         "valid": not leaks,
+        "checked": True,
         "warnings": [],
         "leaks": leaks,
     }
@@ -63,11 +65,12 @@ def main() -> int:
     results = [check_task(task, Path(args.gold)) for task in find_task_dirs(Path(args.tasks))]
     invalid = [result for result in results if not result["valid"]]
     for result in results:
-        print(f"{result['task_id']}: {'OK' if result['valid'] else 'LEAK'}")
+        status = "SKIP" if not result["checked"] else "OK" if result["valid"] else "LEAK"
+        print(f"{result['task_id']}: {status}")
         for warning in result.get("warnings", []):
             print(f"  warning: {warning}")
-        for leak in result.get("leaks", []):
-            print(f"  leak: {leak}")
+        if result.get("leaks"):
+            print(f"  leaked private markers: {len(result['leaks'])}")
     return 1 if invalid else 0
 
 

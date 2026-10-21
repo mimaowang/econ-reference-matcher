@@ -1,0 +1,10 @@
+{
+  "name": "econ-reference-matcher",
+  "description": "Find economics and business references that directly support specific manuscript passages.",
+  "author": {
+    "name": "mimaowang",
+    "url": "https://github.com/mimaowang"
+  },
+  "license": "MIT",
+  "skills": ["./econ-reference-matcher"]
+}

@@ -18,6 +18,8 @@ project:
   citation_style: APA
 
 filters:
+  # These are eligibility rules. Prefer strong relevant journals within them;
+  # a quality preference alone should not become another required filter.
   # AND means all active require_* filters must pass.
   # OR means any active accept_if_* filter may pass; blacklists still override.
   filter_logic: AND
@@ -30,7 +32,8 @@ filters:
   accept_if_min_abs_stars: null
   accept_if_ft50: false
   accept_if_utd24: false
-  allowed_fields: ["economics", "finance", "management", "public policy"]
+  # Empty means no field restriction. Add fields only when the user requests one.
+  allowed_fields: []
   journal_whitelist: []
   journal_blacklist: []
   min_publication_year: null
@@ -122,7 +125,7 @@ def validate_config(data: dict[str, Any]) -> tuple[list[str], list[str]]:
             if invalid:
                 errors.append("filters.jcr_quartiles may only contain Q1, Q2, Q3, or Q4")
         min_abs = filters.get("min_abs_stars")
-        if min_abs is not None and (not isinstance(min_abs, int) or not 1 <= min_abs <= 4):
+        if min_abs is not None and (type(min_abs) is not int or not 1 <= min_abs <= 4):
             errors.append("filters.min_abs_stars must be an integer from 1 to 4 or null")
         union_quartiles = filters.get("accept_if_ssci_and_jcr_quartile_in", [])
         if union_quartiles is not None and not isinstance(union_quartiles, list):
@@ -137,7 +140,7 @@ def validate_config(data: dict[str, Any]) -> tuple[list[str], list[str]]:
                 )
         union_min_abs = filters.get("accept_if_min_abs_stars")
         if union_min_abs is not None and (
-            not isinstance(union_min_abs, int) or not 1 <= union_min_abs <= 4
+            type(union_min_abs) is not int or not 1 <= union_min_abs <= 4
         ):
             errors.append("filters.accept_if_min_abs_stars must be an integer from 1 to 4 or null")
         for key in ("require_ft50", "require_utd24", "accept_if_ft50", "accept_if_utd24"):

@@ -25,6 +25,8 @@ python benchmarks/public/scripts/run_benchmark.py --iteration release-smoke --wo
 - Update `CHANGELOG.md`.
 - Update `pyproject.toml` version.
 - Confirm `README.md` quick-start, configuration, and benchmark notes match the current files.
+- Keep `skills/` runtime-only. Development evals belong in `benchmarks/evals/`; the standalone skill license must match the root license.
+- Validate both `.claude-plugin/marketplace.json` and `skills/.claude-plugin/plugin.json` with `claude plugin validate` when Claude Code is available. For unpublished local edits, load the runtime plugin with `claude --plugin-dir ./skills`; the marketplace's remote source tests the published GitHub files, not local edits.
 - Confirm `ACKNOWLEDGEMENTS.md` and `NOTICE.md` still reflect any borrowed ideas, code, data, or project influences.
 
 ## 4. Tag

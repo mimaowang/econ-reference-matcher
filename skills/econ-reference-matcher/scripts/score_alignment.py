@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Score candidate papers against target claims with transparent lexical checks."""
+"""Inspect lexical overlap without deciding whether a paper supports a claim."""
 
 from __future__ import annotations
 
 import argparse
 import json
-import math
 import re
 from pathlib import Path
 from typing import Any
@@ -95,36 +94,15 @@ def score_pair(claim: dict[str, Any], candidate: dict[str, Any]) -> dict[str, An
     overlap = jaccard(claim_tokens, paper_tokens)
     excerpt_present = bool(str(candidate.get("evidence_excerpt", "")).strip())
     abstract_present = bool(str(candidate.get("abstract", "")).strip())
-    evidence_score = 3 if excerpt_present else 2 if abstract_present else 1
-    lexical_score = min(3, math.floor(overlap * 10))
-    total = lexical_score + evidence_score
-
-    claim_type = str(claim.get("type", "")).lower()
-    citation_need = str(claim.get("citation_need", "")).lower()
-
-    if lexical_score >= 2 and evidence_score >= 2 and "direct" in citation_need:
-        category = "Direct Support"
-    elif lexical_score >= 2 and evidence_score >= 2 and (
-        "theory" in citation_need or "mechanism" in claim_type
-    ):
-        category = "Theory Support"
-    elif lexical_score >= 1 and evidence_score >= 2 and "dialogue" in citation_need:
-        category = "Literature Dialogue"
-    elif lexical_score >= 2 and evidence_score < 2:
-        category = "Strong Candidate Pending Full Text"
-    else:
-        category = "Topic Adjacent / Rejected"
 
     return {
         "claim_id": claim.get("id") or claim.get("claim_id"),
         "candidate_id": candidate.get("id"),
-        "category": category,
-        "lexical_overlap": round(overlap, 4),
-        "lexical_score": lexical_score,
-        "evidence_score": evidence_score,
-        "total_score": total,
+        "lexical_overlap": round(overlap, 4) if claim_tokens and paper_tokens else None,
+        "provided_text": "excerpt" if excerpt_present else "abstract" if abstract_present else "metadata_only",
+        "review_required": True,
         "matched_terms": sorted(claim_tokens & paper_tokens),
-        "note": "Lexical score is a sanity check only; final category requires scholarly judgment.",
+        "note": "Word overlap is not support. Read the source to assess direction, mechanism, scope, and evidence; low overlap is not a rejection rule.",
     }
 
 
@@ -135,9 +113,13 @@ def cmd_score(args: argparse.Namespace) -> int:
     for claim in claims:
         for candidate in candidates:
             results.append(score_pair(claim, candidate))
-    results.sort(key=lambda item: item["total_score"], reverse=True)
+    results.sort(
+        key=lambda item: item["lexical_overlap"] if item["lexical_overlap"] is not None else -1,
+        reverse=True,
+    )
     output = {
-        "schema": "econ-reference-matcher.alignment-scores.v1",
+        "schema": "econ-reference-matcher.alignment-scores.v2",
+        "ordering": "Lexical overlap for inspection, not citation fitness. Review all candidates independently of this order.",
         "claims": len(claims),
         "candidates": len(candidates),
         "scores": results,
@@ -151,7 +133,7 @@ def cmd_score(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Score candidate papers against claims using transparent lexical overlap."
+        description="Inspect claim-paper word overlap; does not classify, verify, or reject evidence."
     )
     parser.add_argument("--claims", required=True, help="claims JSON path")
     parser.add_argument("--candidates", required=True, help="normalized candidates JSON path")
